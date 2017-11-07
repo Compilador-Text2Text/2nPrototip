@@ -1,0 +1,15 @@
+syntax on
+colorscheme industry
+
+set relativenumber
+
+set showcmd
+set ruler
+set showmode
+
+set encoding=utf-8
+set fileencoding=utf-8
+
+set colorcolumn=75,80
+
+set autoindent
