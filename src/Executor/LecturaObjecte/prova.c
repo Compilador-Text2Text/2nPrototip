@@ -23,11 +23,14 @@ char lectura_fitxer ()
 	return getc (my_pf);
 }
 
-int main ()
+int main (int argc, char *argv[])
 {
-	char c;
-
-	my_pf = inicialitza_lecura_fitxer ("lexic.c");
+	if (argc != 2)
+	{
+		printf ("Necessitem 1 argument.\n");
+		printf ("- Fitxer on farem la lectura.\n");
+	}
+	my_pf = inicialitza_lecura_fitxer (argv[1]);
 	llegir (lectura_fitxer);
 
 
