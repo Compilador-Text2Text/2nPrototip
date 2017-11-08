@@ -68,7 +68,8 @@ int llegir_inici_final (char i, char f)
 	return 1;
 }
 
-int llegir_digit_final ( char f )
+int
+llegir_digit_final ( char f )
 {
 	int o = 0;
 	char c;
@@ -79,7 +80,25 @@ int llegir_digit_final ( char f )
 	if (c != f)
 	{
 		printf ("Després de llegir el dígit, s'esperava: '%c'.\n", f);
-		printf ("On ha entrat: '%c'", c);
+		printf ("On ha entrat: '%c'\n", c);
+		error_final ("Dígit amb final concret.");
+	}
+
+	return o;
+}
+
+int
+llegir_digit_final_comenzat (char c, char f)
+{
+	int o = c - '0';
+
+	while (isdigit((c = llegir_caracter ())))
+		o = c - '0' + o*10;
+
+	if (c != f)
+	{
+		printf ("Després de llegir el dígit, s'esperava: '%c'.\n", f);
+		printf ("On ha entrat: '%c'\n", c);
 		error_final ("Dígit amb final concret.");
 	}
 

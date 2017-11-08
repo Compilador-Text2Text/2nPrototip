@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "v00-lèxic.h"
+#include "../executor.h"
+
+struct variables variables_globals;
+struct llista_descriptors descriptors_funcio;
+struct llista_sistema funcions_sistema;
 
 FILE *my_pf;
 
@@ -18,12 +23,14 @@ inicialitza_lecura_fitxer (char *nom)
 	return pf;
 }
 
-char lectura_fitxer ()
+char
+lectura_fitxer ()
 {
 	return getc (my_pf);
 }
 
-int main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
 	if (argc != 2)
 	{

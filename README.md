@@ -14,3 +14,4 @@ Format
 ======
 - Variables, mai posar articles.
 - GNUmakefile, intentarem fer el màxim possible anar el GNU.mk
+- llistes, són: mida i punter.

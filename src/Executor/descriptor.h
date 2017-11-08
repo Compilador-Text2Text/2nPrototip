@@ -8,6 +8,7 @@
  * 0	No depen de ningú.
  * 0.0		Valor		{char, int, void*}
  * 0.1		Localitzacions	{Codi, Variables, Funció}
+ * 0.2		Tipus		{Char, Int, Void}
  *
  * 1	Amb dependències amb *0*.
  * 1.0		Localitzat	Saber on està.
@@ -25,7 +26,11 @@
  * 3.0		Descriptor de funció.
  *
  * 4	Amb dependències amb *3*.
- * 3.0		Funció dinàmica.
+ * 4.0		Funció dinàmica.
+ *
+ * 5	Amb dependències amb *4*.
+ * 5.0		Funció de sistema.
+ *
  **/
 
 	/*0*	No depen de ningú.	*/
@@ -57,6 +62,16 @@ localitzacions
 	NoRetorn	// Error, no queden frases.
 };
 
+/*0.2* Serveix per a poder saber amb que estem treballant.	*/
+enum
+tipus
+{
+	Void,
+	Char,
+	Int,
+	Pointer
+};
+
 	/*1*	Dependència amb *0*.	*/
 /*1.0* Saber exactament on està la informació.			*/
 // Usat: (2.0)paraula.
@@ -80,11 +95,11 @@ struct
 variables
 {
 	size_t mida;
-	struct variable* variables;
+	struct variable* punter;
 };
 
 /*1.2* Dades que seran usades per les funcions.			*/
-// Usat: (4.0)funció dinàmica.
+// Usat: (4.0)funció dinàmica i (5.0)funció sistema.
 struct
 element_execucio
 {
@@ -99,7 +114,7 @@ memoria_execucio
 {
 	size_t mida;
 	size_t us;
-	struct element_execucio *memoria;
+	struct element_execucio *punter;
 };
 
 	/*2*	Dependència amb *1*.	*/
@@ -116,7 +131,7 @@ struct
 frase
 {
 	size_t mida;
-	struct paraula *paraula;
+	struct paraula *punter;
 };
 
 /*2.0.0.0* Llista de frases.					*/
@@ -125,7 +140,7 @@ struct
 codi
 {
 	size_t mida;
-	struct frase *frase;
+	struct frase *punter;
 };
 
 	/*3*	Dependència amb *2*.	*/
@@ -137,10 +152,12 @@ descriptor_funcio
 	struct variables arguments;
 	struct variables local;
 	size_t mida_memoria_execucio;
+	struct codi codi;
 };
 
 	/*4*	Dependència amb *3*.	*/
 /*4.0* Tota la informació d'una funció en execució.		*/
+// Usat: (5.0)funció de sistema.
 struct
 funcio_dinamica
 {
@@ -150,6 +167,14 @@ funcio_dinamica
 	struct memoria_execucio memoria;
 	size_t cp1, cp2;
 	struct descriptor_funcio *descriptor;
+};
+
+	/*5*	Dependència amb *4*.	*/
+/*5.0* Tota la informació d'una funció de sistema.		*/
+struct
+funcio_sistema
+{
+	int (*funcio) (size_t, struct element_execucio, struct funcio_dinamica);
 };
 
 #endif // DESCRIPTOR_PER_L_EXECUTOR_H_
