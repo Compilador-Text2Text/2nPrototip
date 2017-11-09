@@ -2,7 +2,7 @@ include Executor/GNU.mk
 
 CLEAN = clean
 FORCE_COMPILE = force
-OBJDIR = Bin
+OBJDIR = ../Bin
 ALL = $(HEAD) $(CLEAN)
 HEAD =			\
        $(HEAD_EXECUTOR)	\

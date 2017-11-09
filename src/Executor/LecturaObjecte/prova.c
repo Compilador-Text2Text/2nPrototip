@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "v00-lèxic.h"
 #include "../executor.h"
+#include "../Depurador/menú.h"
 
 struct variables variables_globals;
 struct llista_descriptors descriptors_funcio;
@@ -40,6 +41,7 @@ main (int argc, char *argv[])
 	my_pf = inicialitza_lecura_fitxer (argv[1]);
 	llegir (lectura_fitxer);
 
+	menu_visualitzacio ();
 
 	// Tanquem el document.
 	fclose (my_pf);

@@ -59,7 +59,9 @@ localitzacions
 	Sistema,	// Funció pròpia del compilador.
 	Retorn,		// Retorn del resultat d'una funció pròpia.
 
-	NoRetorn	// Error, no queden frases.
+	NoRetorn,	// Error, no queden frases.
+
+	EndLocalitzacions
 };
 
 /*0.2* Serveix per a poder saber amb que estem treballant.	*/
@@ -69,7 +71,9 @@ tipus
 	Void,
 	Char,
 	Int,
-	Pointer
+	Pointer,
+
+	EndTipus
 };
 
 	/*1*	Dependència amb *0*.	*/
