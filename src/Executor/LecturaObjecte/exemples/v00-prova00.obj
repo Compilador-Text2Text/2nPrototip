@@ -1,3 +1,9 @@
+# tipus:
+#- 0 'void'
+#- 1 'char'
+#- 2 'int'
+#- 3 'punter
+
 # Variables Globals
 -v[ariable] global:21
 
@@ -5,9 +11,22 @@
 <F:0
 	-arguments:0
 	-variables:0
-	-codi:1
+	-codi:2
 		-frase:3
-		0 0
-		0 0
-		0 0
+# on {Codi, Variables, Funcions}, relatiu, altres
+			0 2 23
+			0 2 21
+			0 2 15
+		-frase:2
+			0 1 'c'
+			0 1 'a'
+
+# on
+# 0 Codi
+# 1 Arguments
+# 2 Locals
+# 3 Globals
+# 4 Funcions
+# 5 Sistema
+# 6 Retorn
 >fi

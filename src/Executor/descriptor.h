@@ -56,8 +56,8 @@ localitzacions
 	Globals,	// Les dades estan a les variables globals.
 
 	Funcions,	// Creació d'una funció pròpia.
-	Retorn,		// Retorn del resultat d'una funció pròpia.
 	Sistema,	// Funció pròpia del compilador.
+	Retorn,		// Retorn del resultat d'una funció pròpia.
 
 	NoRetorn	// Error, no queden frases.
 };

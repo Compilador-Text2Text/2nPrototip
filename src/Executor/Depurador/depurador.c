@@ -24,8 +24,8 @@ inicialitzar_localitzacions ()
 	localitzat[3].id = Globals; localitzat[3].nom="v globals";
 
 	localitzat[4].id = Funcions; localitzat[4].nom="f funcions";
-	localitzat[5].id = Retorn; localitzat[5].nom="f retorn";
-	localitzat[6].id = Sistema; localitzat[6].nom="f sistema";
+	localitzat[5].id = Sistema; localitzat[5].nom="f sistema";
+	localitzat[6].id = Retorn; localitzat[6].nom="f retorn";
 
 	localitzat[7].id = NoRetorn; localitzat[7].nom="e no hi ha retorn";
 }

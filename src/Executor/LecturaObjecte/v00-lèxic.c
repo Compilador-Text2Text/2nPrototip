@@ -5,6 +5,12 @@
 #include "../executor.h"
 #include "maquina_estats.h"
 
+// Funcions a modificar si vols tenir en compte:
+// - tipus
+// - Valors nous
+void llegir_tipus_valor (union valor* v);
+char inicialitzar_paraules (struct frase *pf);
+
 void
 error (char *s)
 {
@@ -22,6 +28,29 @@ comprovacio_caracter (char c, char f)
 	}
 }
 
+void llegir_tipus_valor (union valor* v)
+{
+	int d;
+
+	switch ((d = llegir_digit_final ( ' ' )))
+	{
+	case Char:
+		comprovacio_caracter (llegir_linia (), '\'');
+		v->caracter = llegir_linia ();
+		comprovacio_caracter (llegir_linia (), '\'');
+		break;
+
+	case Int:
+		v->enter = llegir_digit_final ( '\n' );
+		break;
+
+	default:
+		printf ("Esperavem que fos un: Char o un Int.\n");
+		printf ("Int: %d\nChar: %d\nEntrat: %d\n", Int, Char, d);
+		error ("Valor inesperat.");
+	}
+}
+
 char
 definir_variables (struct variables *vs)
 {
@@ -35,25 +64,19 @@ definir_variables (struct variables *vs)
 	// Inicialitzar els valors.
 	while ( isdigit ( (c = llegir_linia ()) ) )
 	{
-		v = vs->punter + llegir_digit_final_comenzat (c, ' ');
+		d = llegir_digit_final_comenzat (c, ' ');
+		v = vs->punter + d;
 
-		switch ( (d = llegir_digit_final ( ' ' )) )
+		// Comprovant errors.
+		if (d >= vs->mida)
 		{
-		case Char:
-			v->valor.caracter = llegir_linia ();
-			comprovacio_caracter (llegir_linia (), '-');
-			break;
-
-		case Int:
-			v->valor.enter = llegir_digit_final ( '\n' );
-			break;
-
-		default:
-			printf ("Esperavem que fos un: Char o un Int.\n");
-			printf ("Int: %d\nChar: %d\nEntrat: %d\n", Int, Char, d);
-			error ("Valor inesperat.");
-		break;
+			printf ("L'index se surt de la memòria reservada.\n");
+			printf ("- Memòria: %zu\n- Demanat: %d\n", vs->mida, d);
+			error ("Fora de memòria.");
 		}
+
+		// Omplint la memòria.
+		llegir_tipus_valor (&v->valor);
 	}
 
 	return c;
@@ -66,18 +89,46 @@ inicialitzar_paraules (struct frase *pf)
 	char c;
 	struct paraula *pp;
 
-	c = llegir_linia ();
 	i = 0;
-	while ( isdigit (c) )
+	while ( isdigit ((c = llegir_linia ())) && (i < pf->mida) )
 	{
 		pp = pf->punter + i++;
-		c = llegir_linia ();
+
+		// Que fer.
+		d = llegir_digit_final_comenzat (c, ' ');
+		pp->lloc.on = d;
+		switch (d)
+		{
+		case Codi: // Tipus valor
+			pp->lloc.relatiu = 0;
+			llegir_tipus_valor (&pp->auxiliar);
+			break;
+
+		case Arguments:
+		case Locals:
+		case Globals:
+			pp->lloc.relatiu = llegir_digit_final ( '\n' );
+			break;
+
+		case Funcions:
+		case Sistema:
+			pp->lloc.relatiu = llegir_digit_final ( ' ' );
+			pp->auxiliar.enter = llegir_digit_final ( '\n' );
+			break;
+
+		case Retorn:
+			pp->lloc.relatiu = llegir_digit_final ( '\n' );
+			break;
+
+		default:
+		break;
+		}
 	}
 
-	if (i != pf->mida)
+	if ( isdigit (c) || (i != pf->mida))
 	{
 		printf ("Reservat: %zu\nOcupat: %d\n", pf->mida, i);
-		error ("No escrites totes les paraules.");
+		error ("No escrites totes les paraules o volen escriure on no queda memòria.");
 	}
 
 	return c;
@@ -91,7 +142,7 @@ inicialitzar_frases (struct descriptor_funcio *pdf)
 
 	c = llegir_linia ();
 	i = 0;
-	while ( c == '-' )
+	while ( (c == '-') && (i < pdf->codi.mida) )
 	{
 		llegir_inici_final ( 'f', ':' );
 		d = llegir_digit_final ( '\n' );
@@ -103,10 +154,10 @@ inicialitzar_frases (struct descriptor_funcio *pdf)
 		c = inicialitzar_paraules (pf);
 	}
 
-	if (i != pdf->codi.mida)
+	if ( (c == '-') || (i != pdf->codi.mida) )
 	{
 		printf ("Reservat: %zu\nOcupat: %d\n", pdf->codi.mida, i);
-		error ("No escrites totes les frases.");
+		error ("No escrites totes les frases o volen escriure on no queda memòria.");
 	}
 
 	return c;

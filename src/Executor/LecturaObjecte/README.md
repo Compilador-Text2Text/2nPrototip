@@ -34,7 +34,7 @@ Definir codi.
 
 - [(bucle per frase)
 - -f[rased]:\d+\n	# Nombre de paraules per aquesta frase.
--  # on{Codi, variables, funció}, relatiu, adicionals.
+-  \# on{Codi, variables, funció}, relatiu, adicionals.
 -  \d+ \d+ [valor]	# Exemple de codi
 -  \d+ \d+\n		# Exemple de variables
 -  \d+ \d+ \d+		# Exemple de funció, on l'últim és el nombre d'arguments.
