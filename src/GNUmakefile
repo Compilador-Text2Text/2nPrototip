@@ -1,11 +1,14 @@
 include Executor/GNU.mk
+include Lèxic/GNU.mk
 
 CLEAN = clean
-FORCE_COMPILE = force
+DEPURAR = dm h	# deprar manual
 OBJDIR = ../Bin
-ALL = $(HEAD) $(CLEAN)
-HEAD =			\
-       $(HEAD_EXECUTOR)	\
+ALL = $(OBJECT)
+HEAD =				\
+
+OBJECT =			\
+	$(EXECUTOR_EXECUTOR_O_)	\
 
 # Comprovar que els caps són correctes
 #head: $(HEAD)
@@ -14,17 +17,33 @@ HEAD =			\
 # 4.3 Types of Prerequisites
 # Fa que el directori sigui prioritari.
 $(ALL): | $(OBJDIR)
-
-$(FORCE_COMPILE): $(CLEAN) $(ALL)
+$(EXECUTOR_H_): | $(MK_EXECUTOR)
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
+$(DEPURAR):
+# General
+	@printf "CLEAN: %s\n" $(CLEAN)
+	@printf "DEPURAR: %s\n" $(DEPURAR)
+	@printf "OBJDIR: %s\n" $(OBJDIR)
+	@printf "ALL: %s\n" $(ALL)
+	@printf "OBJECT: %s\n" $(OBJECT)
+	@printf "HEAD: %s\n" $(HEAD)
+# Executor
+	@printf "\nEXECUTOR\nMK_EXECUTOR: %s\n" $(MK_EXECUTOR)
+	@printf "EXECUTOR_H_: %s\n" $(EXECUTOR_H_)
+	@printf "EXECUTOR_DESCRIPTOR_H_: %s\n" $(EXECUTOR_DESCRIPTOR_H_)
+	@printf "EXECUTOR_EXECUTOR_H_: %s\n" $(EXECUTOR_EXECUTOR_H_)
+	@printf "EXECUTOR_EXECUTOR_O_: %s\n" $(EXECUTOR_EXECUTOR_O_)
+# Lèxic
+	@printf "\nLÈXIC\n"
+	@printf "MK_LEXIC: %s\n" $(MK_LEXIC)
+
+
 ####################     EXECUTOR     ####################
-$(OBJDIR)/descriptor.h.gch: Executor/descriptor.h $(MK_EXECUTOR)
-	gcc Executor/descriptor.h -o $(OBJDIR)/descriptor.h.gch
 
 $(CLEAN):
 	rm $(OBJDIR)/* -f
 
-.PHONY: head $(CLEAN)
+.PHONY: $(CLEAN) $(DEPURAR)

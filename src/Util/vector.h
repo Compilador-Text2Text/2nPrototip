@@ -1,3 +1,4 @@
+#ifndef UTIL_VECTOR_H_
 #define UTIL_VECTOR_H_
 
 #include <stdlib.h>
@@ -10,3 +11,5 @@ vector
 	size_t byts;
 	void * dada;
 };
+
+#endif // UTIL_VECTOR_H_
