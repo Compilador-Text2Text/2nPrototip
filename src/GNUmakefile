@@ -1,5 +1,5 @@
-include Executor/GNU.mk
-include Lèxic/GNU.mk
+include 1-Executor/GNU.mk
+include 2-Lèxic/GNU.mk
 
 CLEAN = clean
 DEPURAR = dm h	# deprar manual

@@ -1,4 +1,5 @@
-MK_EXECUTOR = Executor/GNU.mk
+FILE_EXECUTOR = 1-Executor
+MK_EXECUTOR = $(FILE_EXECUTOR)/GNU.mk
 
 EXECUTOR_H_ =				\
 	$(EXECUTOR_DESCRIPTOR_H_)	\
@@ -6,12 +7,12 @@ EXECUTOR_H_ =				\
 
 # Dependencies al tenir la llibreria.
 EXECUTOR_DESCRIPTOR_H_	=		\
-	Executor/descriptor.h		\
+	$(FILE_EXECUTOR)/descriptor.h		\
 
 EXECUTOR_EXECUTOR_H_	=		\
-	Executor/executor.h		\
+	$(FILE_EXECUTOR)/executor.h		\
 	$(EXECUTOR_DESCRIPTOR_H_)	\
 
 EXECUTOR_EXECUTOR_O_	=		\
-	Executor/executor.c		\
+	$(FILE_EXECUTOR)/executor.c		\
 	$(EXECUTOR_EXECUTOR_H_)		\
