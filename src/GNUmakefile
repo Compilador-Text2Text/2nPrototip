@@ -1,14 +1,33 @@
+include 0-Inicialitzador/GNU.mk
 include 1-Executor/GNU.mk
 include 2-Lèxic/GNU.mk
 
-CLEAN = clean
-DEPURAR = dm h	# deprar manual
-OBJDIR = ../Bin
-ALL = $(OBJECT)
-HEAD =				\
+CLEAN	= clean
+DEPURAR	= dm h	# deprar manual
+OBJDIR	= ../Bin
+LIBS	= -g -Wall
+GLIBS	= -c $(LIBS)
+MK_INTERPRET = GNUmakefile
 
+all: $(OBJDIR)/interpret
+
+ALL	=			\
+	$(OBJECT) $(MK)		\
+	$(MK_ALL)		\
+
+HEAD	=			\
+	$(INICIALITZADOR_H_)	\
+
+# Tots els *.o
 OBJECT =			\
-	$(EXECUTOR_EXECUTOR_O_)	\
+	$(OBJDIR)/main.o	\
+	$(INICIALITZADOR_O_)	\
+	$(EXECUTOR_O_)		\
+
+MK_ALL =			\
+	$(MK_INTERPRET)		\
+	$(MK_INICIALITZADOR)	\
+
 
 # Comprovar que els caps són correctes
 #head: $(HEAD)
@@ -17,7 +36,6 @@ OBJECT =			\
 # 4.3 Types of Prerequisites
 # Fa que el directori sigui prioritari.
 $(ALL): | $(OBJDIR)
-$(EXECUTOR_H_): | $(MK_EXECUTOR)
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
@@ -30,6 +48,9 @@ $(DEPURAR):
 	@printf "ALL: %s\n" $(ALL)
 	@printf "OBJECT: %s\n" $(OBJECT)
 	@printf "HEAD: %s\n" $(HEAD)
+# Inicialitzador
+	@printf "\nINICIALITZADOR\n"
+	@printf "Init: %s\n" $(FILE_INICIALITZADOR)
 # Executor
 	@printf "\nEXECUTOR\nMK_EXECUTOR: %s\n" $(MK_EXECUTOR)
 	@printf "EXECUTOR_H_: %s\n" $(EXECUTOR_H_)
@@ -41,9 +62,25 @@ $(DEPURAR):
 	@printf "MK_LEXIC: %s\n" $(MK_LEXIC)
 
 
-####################     EXECUTOR     ####################
+####################     INICIALITZADOR     ####################
+$(INICIALIRZADOR_O_V00): $(INICIALIRZADOR_C_V00) $(INICIALIRZADOR_C_V00) # $(MK_INICIALITZADOR) $(MK_INTERPRET)
+	gcc $(INICIALIRZADOR_C_V00) $(GLIBS) -o $(INICIALIRZADOR_O_V00)
 
+####################     EXECUTOR     ####################
+$(EXECUTOR_EXECUTOR_O_): $(EXECUTOR_EXECUTOR_C_) $(EXECUTOR_EXECUTOR_H_) # $(MK_INICIALITZADOR) $(MK_INTERPRET)
+	gcc $(EXECUTOR_EXECUTOR_C_) $(GLIBS) -o $(EXECUTOR_EXECUTOR_O_)
+
+
+####################     INTERPRET     ####################
+$(OBJDIR)/main.o: main.c # $(MK_INTERPRET)
+	gcc main.c $(GLIBS) -o $(OBJDIR)/main.o
+
+$(OBJDIR)/interpret: $(OBJECT) # $(MK_ALL)
+	gcc $(OBJECT) $(LIBS) -o $(OBJDIR)/interpret
+
+
+####################     Útils     ####################
 $(CLEAN):
 	rm $(OBJDIR)/* -f
 
-.PHONY: $(CLEAN) $(DEPURAR)
+.PHONY: $(CLEAN) $(DEPURAR) all
