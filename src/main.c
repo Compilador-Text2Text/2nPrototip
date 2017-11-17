@@ -2,6 +2,8 @@
 
 int main (int argc, char *argv[])
 {
-	inicialitzador_lectura_objecte ("hola");
-	return 0;
+	int out;
+	out = inicialitzador_lectura_objecte ("hola");
+	finalitza_allibera_memoria ();
+	return out;
 }

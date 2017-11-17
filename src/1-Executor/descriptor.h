@@ -9,6 +9,7 @@
  * 0.0		Valor		{char, int, void*}
  * 0.1		Localitzacions	{Codi, Variables, Funció}
  * 0.2		Tipus		{Char, Int, Void}
+ * 0.3		Sistema		Noms de funcions del sistema.
  *
  * 1	Amb dependències amb *0*.
  * 1.0		Localitzat	Saber on està.
@@ -76,6 +77,15 @@ tipus
 	EndTipus
 };
 
+/*0.3* Serveix per a poder definir les funcions amb dígits.	*/
+enum
+sistema
+{
+	Igual_general,
+	Extreure_punter,
+
+	End_sistema
+};
 	/*1*	Dependència amb *0*.	*/
 /*1.0* Saber exactament on està la informació.			*/
 // Usat: (2.0)paraula.
@@ -98,6 +108,7 @@ variable
 struct
 variables
 {
+	char *nom;
 	size_t mida;
 	struct variable* punter;
 };
@@ -153,6 +164,7 @@ codi
 struct
 descriptor_funcio
 {
+	char *nom;
 	struct variables arguments;
 	struct variables local;
 	size_t mida_memoria_execucio;
@@ -178,7 +190,8 @@ funcio_dinamica
 struct
 funcio_sistema
 {
-	int (*funcio) (size_t, struct element_execucio, struct funcio_dinamica);
+	char *nom;
+	int (*funcio) (size_t, struct element_execucio *, struct funcio_dinamica *);
 };
 
 #endif // DESCRIPTOR_PER_L_EXECUTOR_H_

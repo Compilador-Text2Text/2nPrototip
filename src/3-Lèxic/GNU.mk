@@ -1,4 +1,4 @@
-FILE_LEXIC = 2-Lèxic
+FILE_LEXIC = 3-Lèxic
 include $(FILE_LEXIC)/LecturaObjecte/GNU.mk
 
 MK_LEXIC	=			\

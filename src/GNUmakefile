@@ -1,6 +1,7 @@
 include 0-Inicialitzador/GNU.mk
 include 1-Executor/GNU.mk
-include 2-Lèxic/GNU.mk
+include 2-Funció-de-sistema/GNU.mk
+include 3-Lèxic/GNU.mk
 
 CLEAN	= clean
 DEPURAR	= dm h	# deprar manual
@@ -23,6 +24,7 @@ OBJECT =			\
 	$(OBJDIR)/main.o	\
 	$(INICIALITZADOR_O_)	\
 	$(EXECUTOR_O_)		\
+	$(SISTEM_O_)		\
 
 MK_ALL =			\
 	$(MK_INTERPRET)		\
@@ -57,18 +59,30 @@ $(DEPURAR):
 	@printf "EXECUTOR_DESCRIPTOR_H_: %s\n" $(EXECUTOR_DESCRIPTOR_H_)
 	@printf "EXECUTOR_EXECUTOR_H_: %s\n" $(EXECUTOR_EXECUTOR_H_)
 	@printf "EXECUTOR_EXECUTOR_O_: %s\n" $(EXECUTOR_EXECUTOR_O_)
+# Sistema
+	@printf "\nSISTEMA\n"
+	@printf "SISTEM_INIT_C_: %s\n" $(SISTEM_INIT_C_)
+	@printf "SISTEM_INIT_H_: %s\n" $(SISTEM_INIT_H_)
+	@printf "SISTEM_INIT_O_: %s\n" $(SISTEM_INIT_O_)
 # Lèxic
 	@printf "\nLÈXIC\n"
 	@printf "MK_LEXIC: %s\n" $(MK_LEXIC)
 
 
 ####################     INICIALITZADOR     ####################
-$(INICIALIRZADOR_O_V00): $(INICIALIRZADOR_C_V00) $(INICIALIRZADOR_C_V00) # $(MK_INICIALITZADOR) $(MK_INTERPRET)
+$(INICIALIRZADOR_O_V00): $(INICIALIRZADOR_C_V00) $(SISTEM_INIT_H_) # $(MK_INICIALITZADOR) $(MK_INTERPRET)
 	gcc $(INICIALIRZADOR_C_V00) $(GLIBS) -o $(INICIALIRZADOR_O_V00)
 
 ####################     EXECUTOR     ####################
 $(EXECUTOR_EXECUTOR_O_): $(EXECUTOR_EXECUTOR_C_) $(EXECUTOR_EXECUTOR_H_) # $(MK_INICIALITZADOR) $(MK_INTERPRET)
 	gcc $(EXECUTOR_EXECUTOR_C_) $(GLIBS) -o $(EXECUTOR_EXECUTOR_O_)
+
+####################     SISTEM     ####################
+$(SISTEM_FUNCION_O_): $(SISTEM_FUNCION_C_) $(SISTEM_FUNCION_H_)
+	gcc $(SISTEM_FUNCION_C_) $(GLIBS) -o $(SISTEM_FUNCION_O_)
+
+$(SISTEM_INIT_O_): $(SISTEM_INIT_C_) $(SISTEM_FUNCION_H_) $(EXECUTOR_EXECUTOR_H_)
+	gcc $(SISTEM_INIT_C_) $(GLIBS) -o $(SISTEM_INIT_O_)
 
 
 ####################     INTERPRET     ####################
