@@ -27,8 +27,13 @@ Visió general.
 
 Definir variables.
 
-- \d+ \d+ \d+	# id de la variable, tipus de la variable, valor.
-- \d+ \d+ '%c'	# id de la variable, tipus de la variable, caracter.
+- "[^ \n] (tipus valor)	# Nom més informació.
+- "[^ \n]\n		# Només el nom.
+
+Tipus i valor.
+- \d+(char)
+- \d+(int)
+- \d+(char\*)
 
 Definir codi.
 

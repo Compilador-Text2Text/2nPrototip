@@ -3,6 +3,7 @@ include 1-Executor/GNU.mk
 include 2-Funció-de-sistema/GNU.mk
 include 3-Lèxic/GNU.mk
 include 6-Depurador/GNU.mk
+include 9-Util/GNU.mk
 
 CLEAN	= clean
 DEPURAR	= dm h	# deprar manual
@@ -28,6 +29,7 @@ OBJECT =			\
 	$(SISTEM_O_)		\
 	$(LEXIC_O_)		\
 	$(DEPURADOR_O_)		\
+	$(UTILS_O_)		\
 
 MK_ALL =			\
 	$(MK_INTERPRET)		\
@@ -95,7 +97,7 @@ $(SISTEM_INIT_O_): $(SISTEM_INIT_C_) $(SISTEM_FUNCION_H_) $(EXECUTOR_EXECUTOR_H_
 $(LEXIC_V00_O_): $(LEXIC_V00_C_) $(EXECUTOR_EXECUTOR_H_)
 	gcc $(LEXIC_V00_C_) $(GLIBS) -o $(LEXIC_V00_O_)
 
-$(LEXIC_ESTATS_O_): $(LEXIC_ESTATS_C_)
+$(LEXIC_ESTATS_O_): $(LEXIC_ESTATS_C_) $(UTILS_VECTOR_H_)
 	gcc $(LEXIC_ESTATS_C_) $(GLIBS) -o $(LEXIC_ESTATS_O_)
 
 ####################     Interpret     ####################
@@ -110,6 +112,9 @@ $(DEPURADOR_DEPURADOR_O_): $(DEPURADOR_DEPURADOR_C_) $(EXECUTOR_EXECUTOR_H_)
 	gcc $(DEPURADOR_DEPURADOR_C_) $(GLIBS) -o $(DEPURADOR_DEPURADOR_O_)
 
 ####################     Útils     ####################
+$(UTILS_VECTOR_O_): $(UTILS_VECTOR_C_)
+	gcc $(UTILS_VECTOR_C_) $(GLIBS) -o $(UTILS_VECTOR_O_)
+
 $(CLEAN):
 	rm $(OBJDIR)/* -f
 

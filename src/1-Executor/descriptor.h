@@ -10,6 +10,7 @@
  * 0.1		Localitzacions	{Codi, Variables, Funció}
  * 0.2		Tipus		{Char, Int, Void}
  * 0.3		Sistema		Noms de funcions del sistema.
+ * 0.4		enumerador SYA	{Valor, Funció, Operador, …}
  *
  * 1	Amb dependències amb *0*.
  * 1.0		Localitzat	Saber on està.
@@ -86,6 +87,22 @@ sistema
 
 	End_sistema
 };
+
+/*0.4* Serveix per a poder definir els estats del SYA.		*/
+enum
+estats_sya
+{
+// Informació obtinguda de la lectura d'objecte.
+	Valor,				// 3, variables, '2', "cadena"
+	Funcio,
+	Obert,				// (, {
+	Tancat,				// ), }
+
+// Informació als descriptors de funcions.
+	Operador_associacio_esquerra,	// +, -, *, /
+	Operador_associacio_dreta,	// ^, =
+
+};
 	/*1*	Dependència amb *0*.	*/
 /*1.0* Saber exactament on està la informació.			*/
 // Usat: (2.0)paraula.
@@ -100,6 +117,7 @@ localitzat
 struct
 variable
 {
+	char *nom;
 	union valor valor;
 };
 

@@ -5,6 +5,8 @@
 #include "../../1-Executor/executor.h"
 #include "maquina_estats.h"
 
+struct vector g_v_s; // Vector global de string.
+
 // Funcions a modificar si vols tenir en compte:
 // - tipus
 // - Valors nous
@@ -28,7 +30,8 @@ comprovacio_caracter (char c, char f)
 	}
 }
 
-void llegir_tipus_valor (union valor* v)
+void
+llegir_tipus_valor (union valor* v)
 {
 	int d;
 
@@ -51,35 +54,25 @@ void llegir_tipus_valor (union valor* v)
 	}
 }
 
-char
+void
 definir_variables (struct variables *vs)
 {
-	int d;
+	int mida, i;
 	char c;
 	struct variable *v;
 
-	vs->mida = llegir_digit_final ( '\n' );
+	vs->mida = mida = llegir_digit_final ( '\n' );
 	vs->punter = malloc ( vs->mida * sizeof (struct variable) );
 
 	// Inicialitzar els valors.
-	while ( isdigit ( (c = llegir_linia ()) ) )
+	for (i = 0; i < mida; i++)
 	{
-		d = llegir_digit_final_comenzat (c, ' ');
-		v = vs->punter + d;
+		v = vs->punter + i;
+		c = llegir_text_sense_espais_ni_enters (&g_v_s, &v->nom);
 
-		// Comprovant errors.
-		if (d >= vs->mida)
-		{
-			printf ("L'index se surt de la memòria reservada.\n");
-			printf ("- Memòria: %zu\n- Demanat: %d\n", vs->mida, d);
-			error ("Fora de memòria.");
-		}
-
-		// Omplint la memòria.
+		if ( c == '\n' ) continue;
 		llegir_tipus_valor (&v->valor);
 	}
-
-	return c;
 }
 
 char
@@ -171,14 +164,15 @@ llegir_codi_objecte (char (*funcio) (void))
 	struct descriptor_funcio *pdf; // Inicialitzar les funcions.
 
 	descriu_lectura (funcio);
+	g_v_s = vector_inicialitzar (100, sizeof (char));
 
 	/****** Variables Globals ******/
 	comprovacio_caracter (llegir_linia (), '-');
 	llegir_inici_final ('v', ':');
-	c = definir_variables (&variables_globals);
+	definir_variables (&variables_globals);
 
 	/****** Funcions ******/
-	comprovacio_caracter (c, '-');
+	comprovacio_caracter (llegir_linia (), '-');
 	llegir_inici_final ('f', ':');
 	d = llegir_digit_final ( '\n' );
 	descriptors_funcio.mida = d;
@@ -194,15 +188,15 @@ llegir_codi_objecte (char (*funcio) (void))
 		/****** Arguments ******/
 		comprovacio_caracter (llegir_linia (), '-');
 		llegir_inici_final ( 'a', ':' );
-		c = definir_variables ( &pdf->arguments );
+		definir_variables ( &pdf->arguments );
 
 		/****** Locals ******/
-		comprovacio_caracter (c, '-');
+		comprovacio_caracter (llegir_linia (), '-');
 		llegir_inici_final ( 'v', ':' );
-		c = definir_variables ( &pdf->local );
+		definir_variables ( &pdf->local );
 
 		/****** Codi ******/
-		comprovacio_caracter (c, '-');
+		comprovacio_caracter (llegir_linia (), '-');
 		llegir_inici_final ( 'c', ':' );
 		d = llegir_digit_final ( '\n' );
 		pdf->codi.mida = d;
@@ -211,4 +205,5 @@ llegir_codi_objecte (char (*funcio) (void))
 
 		c = inicialitzar_frases (pdf);
 	}
+	vector_alliberar (&g_v_s);
 }

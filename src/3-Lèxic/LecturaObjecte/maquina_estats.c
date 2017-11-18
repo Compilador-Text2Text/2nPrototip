@@ -1,6 +1,9 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "maquina_estats.h"
 
 char (*llegir_caracter) (void);
 
@@ -26,7 +29,8 @@ void llegir_fins (char c)
 	error_final ("llegir fins.");
 }
 
-char llegir_linia (void)
+char
+llegir_linia (void)
 {
 	char c;
 
@@ -50,7 +54,34 @@ char llegir_linia (void)
 	exit (EXIT_FAILURE);
 }
 
-int llegir_inici_final (char i, char f)
+char
+llegir_text_sense_espais_ni_enters (struct vector *v, char **ps)
+{
+	char c, e = '\0';
+
+	if ((c = llegir_linia ()) != '"')
+	{
+		printf ("Esperava un '\"' i ha llegit: '%c'\n", c);
+		exit (EXIT_FAILURE);
+	}
+
+	v->us = 0; // Inicialitzem el vector.
+	while (((c = llegir_caracter ()) != ' ') && (c != '\n'))
+		if ( c == EOF )
+			error_final ("Voliem llegir una paraula, però s'ha acabat el fitxer.");
+		else
+			vector_afegir (v, &c);
+
+	// Afegim el final, per a poder copiar correctament el codi.
+	vector_afegir (v, &e);
+
+	*ps = strdup (v->punter);
+
+	return c;
+}
+
+int
+llegir_inici_final (char i, char f)
 {
 	char c;
 	if ((c = llegir_caracter ()) != i)

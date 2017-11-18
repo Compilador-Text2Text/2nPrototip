@@ -5,7 +5,10 @@
 #- 3 'punter
 
 # Variables Globals
--v[ariable] global:21
+-v[ariable] global:3
+	"lili 2 23
+	"jojo 1 '4'
+	"tutu
 
 -funcions:1
 <F:0
