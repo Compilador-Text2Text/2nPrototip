@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#include "../executor.h"
+#include "../../1-Executor/executor.h"
 #include "maquina_estats.h"
 
 // Funcions a modificar si vols tenir en compte:
@@ -164,7 +164,7 @@ inicialitzar_frases (struct descriptor_funcio *pdf)
 }
 
 void
-llegir (char (*funcio) (void))
+llegir_codi_objecte (char (*funcio) (void))
 {
 	int d;
 	char c;

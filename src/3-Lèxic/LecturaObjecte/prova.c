@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "v00-lèxic.h"
-#include "../executor.h"
-#include "../Depurador/menú.h"
+#include "../../1-Executor/executor.h"
+#include "../../6-Depurador/menú.h"
 
 struct variables variables_globals;
 struct llista_descriptors descriptors_funcio;
@@ -39,7 +39,7 @@ main (int argc, char *argv[])
 		printf ("- Fitxer on farem la lectura.\n");
 	}
 	my_pf = inicialitza_lecura_fitxer (argv[1]);
-	llegir (lectura_fitxer);
+	llegir_codi_objecte (lectura_fitxer);
 
 	menu_visualitzacio ();
 

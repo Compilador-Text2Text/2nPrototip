@@ -6,5 +6,6 @@ void finalitzar_depurador (void); // free
 
 void mostra_localitzacions (void);
 void mostra_tipus (void);
+void mostra_sistema (void);
 
 #endif // EXECUTOR_DEPURADOR_H_

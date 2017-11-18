@@ -1,0 +1,18 @@
+FILE_DEPURADOR = 6-Depurador
+MK_INICIALITZADOR = $(FILE_DEPURADOR)/GNU.mk
+
+# General.
+DEPURADOR_C_		=		\
+
+DEPURADOR_H_		=		\
+
+DEPURADOR_O_		=		\
+	$(DEPURADOR_DEPURADOR_O_)	\
+
+
+# Depurador.
+DEPURADOR_DEPURADOR_C_	= $(FILE_DEPURADOR)/depurador.c
+DEPURADOR_DEPURADOR_O_	= $(OBJDIR)/depurador.o
+DEPURADOR_DEPURADOR_H_	=		\
+	$(FILE_DEPURADOR)/depurador.h	\
+

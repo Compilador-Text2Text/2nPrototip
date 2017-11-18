@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../executor.h"
+#include "../1-Executor/executor.h"
 
 char **localitzat = NULL, **tipus = NULL;
 
@@ -16,7 +16,7 @@ char ** inicialitzar_vector_strings (int i)
 }
 
 void
-inicialitzar_localitzacions ()
+inicialitzar_localitzacions (void)
 {
 	localitzat = inicialitzar_vector_strings (EndLocalitzacions);
 
@@ -34,7 +34,7 @@ inicialitzar_localitzacions ()
 }
 
 void
-inicialitzar_tipus ()
+inicialitzar_tipus (void)
 {
 	tipus = inicialitzar_vector_strings (EndTipus);
 
@@ -45,7 +45,7 @@ inicialitzar_tipus ()
 }
 
 void
-mostra_localitzacions ()
+mostra_localitzacions (void)
 {
 	int i;
 
@@ -55,7 +55,7 @@ mostra_localitzacions ()
 }
 
 void
-mostra_tipus ()
+mostra_tipus (void)
 {
 	int i;
 
@@ -65,14 +65,23 @@ mostra_tipus ()
 }
 
 void
-inicialitzar_depurador ()
+mostra_sistema (void)
+{
+	int i;
+
+	for (i = 0; i < funcions_sistema.mida; i++)
+		printf ("- %3d '%s'\n", i, funcions_sistema.punter[i].nom);
+}
+
+void
+inicialitzar_depurador (void)
 {
 	inicialitzar_localitzacions ();
 	inicialitzar_tipus ();
 }
 
 void
-finalitzar_depurador ()
+finalitzar_depurador (void)
 {
 	free (localitzat);
 	free (tipus);
