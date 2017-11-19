@@ -3,9 +3,9 @@ MK_UTILS = $(FILE_UTILS)/GNU.mk
 
 # General
 UTILS_O_		=		\
-	$(UTILS_VECTOR_O_)		\
+	$(UTILS_PILA_O_)		\
 
 # Vector.
-UTILS_VECTOR_C_ = $(FILE_UTILS)/vector.c
-UTILS_VECTOR_H_ = $(FILE_UTILS)/vector.h
-UTILS_VECTOR_O_ = $(OBJDIR)/util_vector.o
+UTILS_PILA_C_ = $(FILE_UTILS)/pila.c
+UTILS_PILA_H_ = $(FILE_UTILS)/pila.h
+UTILS_PILA_O_ = $(OBJDIR)/util_pila.o

@@ -1,11 +1,11 @@
 #include <string.h>
 #include <stdio.h>
-#include "vector.h"
+#include "pila.h"
 
-struct vector vector_inicialitzar (size_t mida, size_t byts)
+struct pila pila_inicialitzar (size_t mida, size_t byts)
 {
 	// Inicialitza l'estructura amb els valors corresponents.
-	struct vector v={
+	struct pila v={
 			.us		= 0,
 			.mida		= mida,
 			.byts		= byts,
@@ -16,14 +16,14 @@ struct vector vector_inicialitzar (size_t mida, size_t byts)
 	if (!v.punter && (v.mida != 0))
 	{
 		printf ("%s\nCapacitat: %zu, Nombre de byts: %zu\n%s\n",
-		"Error al inicialitzar el vector.", mida, byts,
+		"Error al inicialitzar el pila.", mida, byts,
 		"Error generat pel malloc!");
 		exit (EXIT_FAILURE);
 	}
 	return v;
 }
 
-void vector_alliberar (struct vector *v)
+void pila_alliberar (struct pila *v)
 {
 	// Alliberem evitant errors.
 	if (v->mida)
@@ -35,7 +35,7 @@ void vector_alliberar (struct vector *v)
 	v->punter	= NULL;
 }
 
-void incrementar_mida_del_vector_en_necessitat (struct vector *v)
+void incrementar_mida_del_pila_en_necessitat (struct pila *v)
 {
 	// No cal fer res.
 	if (v->us < v->mida) return;
@@ -53,13 +53,13 @@ void incrementar_mida_del_vector_en_necessitat (struct vector *v)
 	if (!v->punter)
 	{
 		printf ("%s\nCapacitat: %zu, Nombre de byts: %zu\n%s\n",
-		"Error al redefinir la mida del vector.", v->mida,
+		"Error al redefinir la mida del pila.", v->mida,
 		v->byts, "Error generat pel realloc!");
 		exit (EXIT_FAILURE);
 	}
 }
 
-void assegurar_memoria_minima (struct vector *v)
+void assegurar_memoria_minima (struct pila *v)
 {
 	if (v->us == 0)
 	{
@@ -73,16 +73,16 @@ void assegurar_memoria_minima (struct vector *v)
 	}
 }
 
-void vector_afegir (struct vector *v, void* punter)
+void pila_afegir (struct pila *v, void* punter)
 {
 	// Cas en que no hi hagi més mida.
-	incrementar_mida_del_vector_en_necessitat (v);
+	incrementar_mida_del_pila_en_necessitat (v);
 
 	// Emmagatzemem la informació.
 	memcpy (v->punter + v->us++*v->byts, punter, v->byts);
 }
 
-void* vector_treure (struct vector *v)
+void* pila_treure (struct pila *v)
 {
 	// Comprovem que tingui mínim un element.
 	assegurar_memoria_minima (v);
@@ -91,7 +91,7 @@ void* vector_treure (struct vector *v)
 	return v->punter + (--v->us)*(v->byts);
 }
 
-void* vector_mostra (struct vector *v)
+void* pila_mostra (struct pila *v)
 {
 	// Comprovem que tingui mínim un element.
 	assegurar_memoria_minima (v);

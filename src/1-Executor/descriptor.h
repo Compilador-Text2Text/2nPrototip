@@ -212,4 +212,16 @@ funcio_sistema
 	int (*funcio) (size_t, struct element_execucio *, struct funcio_dinamica *);
 };
 
+/* Executar el codi */
+extern struct variables variables_globals;
+extern struct llista_descriptors
+{
+	size_t mida;
+	struct descriptor_funcio *punter;
+} descriptors_funcio;
+extern struct llista_sistema
+{
+	size_t mida;
+	struct funcio_sistema *punter;
+} funcions_sistema;
 #endif // DESCRIPTOR_PER_L_EXECUTOR_H_

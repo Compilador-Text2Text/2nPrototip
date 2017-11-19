@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../1-Executor/executor.h"
+#include "../1-Executor/descriptor.h"
 
 char **localitzat = NULL, **tipus = NULL;
 

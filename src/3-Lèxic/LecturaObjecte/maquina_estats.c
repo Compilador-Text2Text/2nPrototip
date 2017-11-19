@@ -55,7 +55,7 @@ llegir_linia (void)
 }
 
 char
-llegir_text_sense_espais_ni_enters (struct vector *v, char **ps)
+llegir_text_sense_espais_ni_enters (struct pila *v, char **ps)
 {
 	char c, e = '\0';
 
@@ -70,10 +70,10 @@ llegir_text_sense_espais_ni_enters (struct vector *v, char **ps)
 		if ( c == EOF )
 			error_final ("Voliem llegir una paraula, però s'ha acabat el fitxer.");
 		else
-			vector_afegir (v, &c);
+			pila_afegir (v, &c);
 
 	// Afegim el final, per a poder copiar correctament el codi.
-	vector_afegir (v, &e);
+	pila_afegir (v, &e);
 
 	*ps = strdup (v->punter);
 

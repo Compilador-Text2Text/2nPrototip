@@ -29,7 +29,7 @@ lectura_fitxer ()
 }
 
 int
-inicialitzador_lectura_objecte (char *nom)
+inicialitzador_lectura_objecte (char *nom, int argc, char **argv)
 {
 	inicialitza_funcions_sistema ();
 	inicialitzar_depurador ();

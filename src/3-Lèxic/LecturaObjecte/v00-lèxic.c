@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#include "../../1-Executor/executor.h"
+#include "../../1-Executor/descriptor.h"
 #include "maquina_estats.h"
 
-struct vector g_v_s; // Vector global de string.
+struct pila g_v_s; // Pila global de string.
 
 // Funcions a modificar si vols tenir en compte:
 // - tipus
@@ -164,7 +164,7 @@ llegir_codi_objecte (char (*funcio) (void))
 	struct descriptor_funcio *pdf; // Inicialitzar les funcions.
 
 	descriu_lectura (funcio);
-	g_v_s = vector_inicialitzar (100, sizeof (char));
+	g_v_s = pila_inicialitzar (100, sizeof (char));
 
 	/****** Variables Globals ******/
 	comprovacio_caracter (llegir_linia (), '-');
@@ -205,5 +205,5 @@ llegir_codi_objecte (char (*funcio) (void))
 
 		c = inicialitzar_frases (pdf);
 	}
-	vector_alliberar (&g_v_s);
+	pila_alliberar (&g_v_s);
 }
