@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "alliberar_memòria.h"
 #include "../2-Funció-de-sistema/inicialitzador.h"
 #include "../3-Lèxic/LecturaObjecte/v00-lèxic.h"
 #include "../6-Depurador/depurador.h"
@@ -41,8 +42,27 @@ inicialitzador_lectura_objecte (char *nom)
 }
 
 void
+inicialitzador_informacio (void)
+{
+	inicialitza_funcions_sistema ();
+	inicialitzar_depurador ();
+
+	printf ("Mostra les localitzacions que hi ha.\n");
+	mostra_localitzacions ();
+	printf ("\nMostra els tipus que hi ha.\n");
+	mostra_tipus ();
+	printf ("\nMostra les funcions a sistema que hi ha.\n");
+	mostra_sistema ();
+
+	finalitza_funcions_sistema ();
+	finalitzar_depurador ();
+}
+
+void
 finalitza_allibera_memoria (void)
 {
 	finalitza_funcions_sistema ();
 	finalitzar_depurador ();
+
+	alliberar_descriptors_funcions ();
 }
