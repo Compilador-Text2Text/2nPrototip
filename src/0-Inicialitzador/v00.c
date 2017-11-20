@@ -48,6 +48,8 @@ inicialitzador_lectura_objecte (char *nom, int argc, char **argv)
 
 	// Memòria per l'execució.
 	e = malloc ( 2 * sizeof (struct element_execucio) );
+	e[0].valor.enter = argc;
+	e[1].valor.punter = argv;
 	p = pila_inicialitzar ( 100, sizeof (struct funcio_dinamica) );
 	crear_nova_funcio_dinamica (2, e, 0, &p);
 
