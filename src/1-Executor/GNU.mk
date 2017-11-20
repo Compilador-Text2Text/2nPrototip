@@ -11,6 +11,8 @@ EXECUTOR_H_	=			\
 
 EXECUTOR_O_	=			\
 	$(EXECUTOR_EXECUTOR_O_)		\
+	$(EXECUTOR_INSTRUCIONS_O_)	\
+	$(EXECUTOR_FUNCIO_O_)		\
 
 # Dependencies al tenir la llibreria.
 EXECUTOR_DESCRIPTOR_H_	=			\
@@ -23,3 +25,13 @@ EXECUTOR_EXECUTOR_H_	=			\
 	$(EXECUTOR_DESCRIPTOR_H_)		\
 
 EXECUTOR_EXECUTOR_O_	= $(OBJDIR)/executor.o
+
+# Instruccions
+EXECUTOR_INSTRUCIONS_C_	= $(FILE_EXECUTOR)/instruccions.c
+EXECUTOR_INSTRUCIONS_H_	= $(FILE_EXECUTOR)/instruccions.h
+EXECUTOR_INSTRUCIONS_O_	= $(OBJDIR)/exec_instruccions.o
+
+# Instruccions
+EXECUTOR_FUNCIO_C_	= $(FILE_EXECUTOR)/punter-funció.c
+EXECUTOR_FUNCIO_H_	= $(FILE_EXECUTOR)/punter-funció.h
+EXECUTOR_FUNCIO_O_	= $(OBJDIR)/exec_funció.o

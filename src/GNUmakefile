@@ -12,7 +12,7 @@ LIBS	= -g -Wall
 GLIBS	= -c $(LIBS)
 MK_INTERPRET = GNUmakefile
 
-all: $(OBJDIR)/interpret
+all: $(CLEAN) $(OBJDIR)/interpret
 
 ALL	=			\
 	$(OBJECT) $(MK)		\
@@ -88,6 +88,12 @@ $(INICIALITZADOR_ALLIBERAR_O_): $(INICIALITZADOR_ALLIBERAR_C_)
 ####################     Executor     ####################
 $(EXECUTOR_EXECUTOR_O_): $(EXECUTOR_EXECUTOR_C_) $(EXECUTOR_EXECUTOR_H_) # $(MK_INICIALITZADOR) $(MK_INTERPRET)
 	gcc $(EXECUTOR_EXECUTOR_C_) $(GLIBS) -o $(EXECUTOR_EXECUTOR_O_)
+
+$(EXECUTOR_INSTRUCIONS_O_): $(EXECUTOR_INSTRUCIONS_C_)
+	gcc $(EXECUTOR_INSTRUCIONS_C_) $(GLIBS) -o $(EXECUTOR_INSTRUCIONS_O_)
+
+$(EXECUTOR_FUNCIO_O_): $(EXECUTOR_FUNCIO_C_)
+	gcc $(EXECUTOR_FUNCIO_C_) $(GLIBS) -o $(EXECUTOR_FUNCIO_O_)
 
 ####################     Sistem     ####################
 $(SISTEM_FUNCION_O_): $(SISTEM_FUNCION_C_) $(SISTEM_FUNCION_H_)

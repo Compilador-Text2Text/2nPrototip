@@ -12,7 +12,10 @@
 
 -funcions:1
 <F:0
-	-arguments:0
+	"main 3
+	-arguments:2
+		"nino
+		"tonu
 	-variables:0
 	-codi:2
 		-frase:3

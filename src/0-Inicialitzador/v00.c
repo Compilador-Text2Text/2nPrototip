@@ -2,6 +2,8 @@
 #include <stdlib.h>
 
 #include "alliberar_memòria.h"
+#include "../1-Executor/instruccions.h"
+#include "../1-Executor/punter-funció.h"
 #include "../2-Funció-de-sistema/inicialitzador.h"
 #include "../3-Lèxic/LecturaObjecte/v00-lèxic.h"
 #include "../6-Depurador/depurador.h"
@@ -31,14 +33,32 @@ lectura_fitxer ()
 int
 inicialitzador_lectura_objecte (char *nom, int argc, char **argv)
 {
+	struct element_execucio *e;
+	struct pila p;
+	struct punter_funcio f;
+	int out;
+
 	inicialitza_funcions_sistema ();
 	inicialitzar_depurador ();
 
+	// Lectura dle fitxer
 	g_pf = inicialitza_lecura_fitxer (nom);
 		llegir_codi_objecte (lectura_fitxer);
 	fclose (g_pf);
 
-	return 0;
+	// Memòria per l'execució.
+	e = malloc ( 2 * sizeof (struct element_execucio) );
+	p = pila_inicialitzar ( 100, sizeof (struct funcio_dinamica) );
+	crear_nova_funcio_dinamica (2, e, 0, &p);
+
+	// Crida perquè executi el codi.
+	f.funcio = funcio_executa_paraula;
+	funcio_ciclica ( &f, &p );
+
+	out = e->valor.enter;
+	free (e);
+	pila_alliberar (&p);
+	return out;
 }
 
 void

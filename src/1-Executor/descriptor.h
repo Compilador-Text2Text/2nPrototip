@@ -126,7 +126,6 @@ variable
 struct
 variables
 {
-	char *nom;
 	size_t mida;
 	struct variable* punter;
 };
@@ -197,7 +196,7 @@ funcio_dinamica
 {
 	struct element_execucio *punter_retorn;
 	struct variables arguments;
-	struct variables locals;
+	struct variables local;
 	struct memoria_execucio memoria;
 	size_t cp1, cp2;
 	struct descriptor_funcio *descriptor;

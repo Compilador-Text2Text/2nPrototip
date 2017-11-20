@@ -62,7 +62,7 @@ definir_variables (struct variables *vs)
 	struct variable *v;
 
 	vs->mida = mida = llegir_digit_final ( '\n' );
-	vs->punter = malloc ( vs->mida * sizeof (struct variable) );
+	vs->punter = mida ? malloc ( mida * sizeof (struct variable) ) : NULL;
 
 	// Inicialitzar els valors.
 	for (i = 0; i < mida; i++)
@@ -184,6 +184,11 @@ llegir_codi_objecte (char (*funcio) (void))
 	{
 		llegir_inici_final ('F', ':' );
 		pdf = descriptors_funcio.punter + llegir_digit_final ( '\n' );
+
+		// Nom i mida de la memoria d'execució
+		c = llegir_text_sense_espais_ni_enters (&g_v_s, &pdf->nom);
+		comprovacio_caracter (c , ' ');
+		pdf->mida_memoria_execucio = llegir_digit_final ('\n');
 
 		/****** Arguments ******/
 		comprovacio_caracter (llegir_linia (), '-');

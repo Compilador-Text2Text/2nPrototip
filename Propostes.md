@@ -30,6 +30,9 @@ Al cridar una funció, aquesta necessitarà certa informació.
   - Saber de quina funció prové.
   - Saber de quina frase ve.
 
+## Llegir strings
+Començar i acabar per ", ja que pots voler un string amb espais!
+
 
 # GNUmakefile
 Usar un vocabulari més fàcil d'entendre.
@@ -44,6 +47,27 @@ $(FITXER_O_): $(FITXER_C_D)
 ```
 Aquest model per a tots els objectes!
 
+## gcc
+He vist que quan compila tot, és molt bestia que tota l'estona fa un:
+- `gcc ../Bin/* ../Bin/*`
+Llavors m'agradaria generar dos objectes, un amb el ../Bin/(nom) i l'altre amb
+només el nom.
+D'aquesta forma, podria fer:
+- `cd ../Bin; gcc (noms)`
+Cosa que quedaria més polit.
+
 # main.c
 Estaria bé que al tenir tantes condicions, fer com si fos un switch gran.
 Subdividir-ho amb funcions per tal de facilitar la lectura del document.
+
+# Inicialitzador
+Inicialitzador i altres.
+Crec que estaria bé separar les funcions per a que quedi més clar que s'està
+fent.
+- alliberar memòria
+- mostrar que fa
+- executar amb lectura objecte
+- Executar amb lectura objecte i fer SYA
+
+# descriptor d'execusió
+- locals vs local
