@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "funcions.h"
-#include "../1-Executor/executor.h"
+#include "../1-Executor/descriptor.h"
 
 void
 inicialitza_funcions_sistema (void)

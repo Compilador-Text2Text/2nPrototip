@@ -1,5 +1,5 @@
 #include "punter-funció.h"
-#include "executor.h"
+#include "instruccions.h"
 
 void
 funcio_ciclica

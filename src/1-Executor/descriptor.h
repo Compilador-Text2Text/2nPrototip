@@ -43,6 +43,7 @@ valor
 {
 	char caracter;
 	int enter;
+	float flotant;
 	void *punter;
 };
 
@@ -70,9 +71,12 @@ localitzacions
 enum
 tipus
 {
+	Cap,
+
 	Void,
 	Char,
 	Int,
+	Float,
 	Pointer,
 
 	EndTipus
@@ -198,6 +202,7 @@ funcio_dinamica
 	struct variables arguments;
 	struct variables local;
 	struct memoria_execucio memoria;
+	// Contadors de punters. 1 canvia poc, 2 canvia molt.
 	size_t cp1, cp2;
 	struct descriptor_funcio *descriptor;
 };

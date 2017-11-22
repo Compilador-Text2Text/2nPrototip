@@ -13,4 +13,6 @@ crear_nova_funcio_dinamica
  struct pila *p			// On guardarem el resultat.
 );
 
+int execucio_paraula (struct pila *p);
+
 #endif // EXECUTOR_DESCRIPTOR_H_

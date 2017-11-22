@@ -71,3 +71,66 @@ crida_funcio_sistema
 {
 	return funcions_sistema.punter[r].funcio (n, e, f);
 }
+
+struct paraula
+toquen_i_increment ( struct funcio_dinamica *f )
+{
+	struct paraula paraula;
+
+	// Per defecte necessitem un retorn.
+	if (f->descriptor->codi.mida == f->cp1)
+	{
+		paraula.lloc.on = NoRetorn;
+		return paraula;
+	}
+
+	paraula = f->descriptor->codi.punter[f->cp1].punter[f->cp2];
+
+	// Alliberem la memoria d'execució.
+	if ( !f->cp2 )
+		f->memoria.us = 0;
+
+	// Incrementem
+	if ( f->cp2 +1 == f->descriptor->codi.punter[f->cp1].mida )
+	{
+		f->cp2 = 0;
+		f->cp1++;
+	} else
+		f->cp2++;
+
+	return paraula;
+}
+
+struct element_execucio *
+obtencio_element_execucio (struct funcio_dinamica *f)
+{
+	return f->memoria.punter + f->memoria.us++;
+}
+
+int
+execucio_paraula (struct pila *p)
+{
+	struct funcio_dinamica	*f;
+	struct paraula		paraula;
+	struct element_execucio	*e;
+
+	f = pila_mostra (p);
+	paraula = toquen_i_increment (f);
+	e = obtencio_element_execucio (f);
+
+	switch (paraula.lloc.on)
+	{
+	case Codi:
+	case Arguments:
+	case Locals:
+	case Globals:
+	case Funcions:
+	case Sistema:
+	case Retorn:
+	case NoRetorn:
+	default:
+		break;
+	}
+	crida_funcio_sistema (1, 2, NULL, f);
+	return 0;
+}
