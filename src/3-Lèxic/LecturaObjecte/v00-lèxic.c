@@ -14,23 +14,6 @@ struct pila g_v_s; // Pila global de string.
 struct descriptor llegir_tipus_valor (union valor* v);
 char inicialitzar_paraules (struct frase *pf);
 
-void
-error (char *s)
-{
-	printf ("Error detectat.\n%s\n", s);
-	exit (EXIT_FAILURE);
-}
-
-void
-comprovacio_caracter (char c, char f)
-{
-	if (c != f)
-	{
-		printf ("S'esperava un '%c' i ha entrat: '%c'\n", f, c);
-		error ("No ha trobat el caràcter.");
-	}
-}
-
 // TODO Hauria de llegir quantes vegades punter és.
 struct descriptor
 llegir_tipus_valor (union valor* v)

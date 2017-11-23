@@ -19,6 +19,23 @@ void error_final (char *s)
 	exit (EXIT_FAILURE);
 }
 
+void
+error (char *s)
+{
+	printf ("Error detectat.\n%s\n", s);
+	exit (EXIT_FAILURE);
+}
+
+void
+comprovacio_caracter (char c, char f)
+{
+	if (c != f)
+	{
+		printf ("S'esperava un '%c' i ha entrat: '%c'\n", f, c);
+		error ("No ha trobat el caràcter.");
+	}
+}
+
 void llegir_fins (char c)
 {
 	char i;
@@ -134,4 +151,16 @@ llegir_digit_final_comenzat (char c, char f)
 	}
 
 	return o;
+}
+
+// Versió 01
+void comprovacio_caracter_1 (char esperat, char *missatge_error_general, int quina_funcio, char*missatge_concret)
+{
+	char c;
+
+	if ((c = llegir_linia ()) == esperat) return;
+	printf ("De on venim:\n%s\n", missatge_error_general);
+}
+void llegir_inici_final_1 (char inici, char final, char *missatge_error_general, int quina_funcio, char*missatge_concret)
+{
 }

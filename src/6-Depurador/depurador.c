@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../1-Executor/descriptor.h"
+#include "../9-Util/pila.h"
 
 char **localitzat = NULL, **tipus = NULL;
 
@@ -90,4 +91,54 @@ finalitzar_depurador (void)
 {
 	free (localitzat);
 	free (tipus);
+}
+
+/************ EXECUCIÓ ***********/
+void
+mostra_variable (struct variable *v)
+{
+}
+
+void
+mostra_element_execucio (struct element_execucio *e)
+{
+	struct descriptor d = e->descriptor;
+
+	printf (" <p%ld", d.vegades_punter);
+	if (e->punter)
+		printf (" \"%s", e->punter->nom);
+	if (d.vegades_punter)
+	{
+		if ((d.vegades_punter == 1) && (d.tipus == Char))
+			printf (" \"%s\"", (char *)e->valor.punter);
+	}
+	else
+		switch (d.tipus)
+		{
+		case CapTipus:	printf (" NT");				break;
+		case Void:	printf (" void");			break;
+		case Char:	printf (" '%c'", e->valor.caracter);	break;
+		case Int:	printf (" %d", e->valor.enter);		break;
+		case Float:	printf (" %f", e->valor.flotant);	break;
+		case Pointer:	printf (" %p", e->valor.punter);	break;
+		case EndTipus:
+		default:	printf (" ERROR'end'");			break;
+		}
+	printf (">");
+}
+
+void
+mostra_memoria_execucio (struct pila *p)
+{
+	int i;
+	struct memoria_execucio m;
+	struct funcio_dinamica	*f;
+
+	f = pila_mostra (p);
+	m = f->memoria;
+
+	printf ("%2ld:", m.us);
+	for (i = 0; i < m.us; i++)
+		mostra_element_execucio (m.punter +i);
+	printf ("\n");
 }

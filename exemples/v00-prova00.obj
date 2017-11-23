@@ -18,15 +18,15 @@
 		"tonu
 	-variables:0
 	-codi:2
-		-frase:4
+		-frase:3
 # on {Codi, Variables, Funcions}, relatiu, altres
 			0 3 23
-			6 1
 			0 3 21
 			0 3 15
-		-frase:2
+		-frase:3
 			0 2 'c'
 			0 2 'a'
+			6 1
 
 # on
 # 0 Codi

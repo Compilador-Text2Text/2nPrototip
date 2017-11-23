@@ -69,5 +69,5 @@ fent.
 - executar amb lectura objecte
 - Executar amb lectura objecte i fer SYA
 
-# descriptor d'execusió
+# descriptor d'execució
 - locals vs local

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "0-Inicialitzador/v00.h"
+#include "0-Inicialitzador/v01.h"
 
 void
 missatge_error (void)

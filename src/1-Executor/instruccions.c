@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "instruccions.h"
+#include "../6-Depurador/depurador.h"
 
 void
 codi_a_element_execucio (struct element_execucio *e, struct paraula p)
@@ -76,6 +77,7 @@ crida_funcio_sistema
 	return funcions_sistema.punter[r].funcio (n, e, f);
 }
 
+// Retorna la paraula que toca i fa l'increment per la següent crida.
 struct paraula
 toquen_i_increment ( struct funcio_dinamica *f )
 {
@@ -90,21 +92,21 @@ toquen_i_increment ( struct funcio_dinamica *f )
 
 	paraula = f->descriptor->codi.punter[f->cp1].punter[f->cp2];
 
-	// Alliberem la memoria d'execució.
+	// Alliberem la memòria d'execució.
 	if ( !f->cp2 )
 		f->memoria.us = 0;
 
 	// Incrementem
-	if ( f->cp2 +1 == f->descriptor->codi.punter[f->cp1].mida )
+	if ( ++f->cp2 == f->descriptor->codi.punter[f->cp1].mida )
 	{
 		f->cp2 = 0;
 		f->cp1++;
-	} else
-		f->cp2++;
+	}
 
 	return paraula;
 }
 
+// No cal comprovar, ja que representa que ho ha fet l'anàlisi semàntica.
 struct element_execucio *
 obtencio_element_execucio (struct funcio_dinamica *f)
 {
@@ -118,6 +120,8 @@ execucio_paraula (struct pila *p)
 	struct funcio_dinamica	*f;
 	struct paraula		paraula;
 	struct element_execucio	*e;
+
+mostra_memoria_execucio (p);
 
 	f = pila_mostra (p);
 	paraula = toquen_i_increment (f);
