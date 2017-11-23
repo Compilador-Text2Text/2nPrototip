@@ -40,6 +40,7 @@ alliberar_funcions (void)
 	for (i = 0; i < descriptors_funcio.mida; i++)
 	{
 		pdf = descriptors_funcio.punter + i;
+		free (pdf->nom);
 		alliberar_variables ( &pdf->arguments );
 		alliberar_variables ( &pdf->local );
 		alliberar_codi ( &pdf->codi );

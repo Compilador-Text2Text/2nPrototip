@@ -71,7 +71,7 @@ localitzacions
 enum
 tipus
 {
-	Cap,
+	CapTipus,
 
 	Void,
 	Char,
@@ -117,12 +117,20 @@ localitzat
 	size_t relatiu;
 };
 
+struct
+descriptor
+{
+	enum tipus tipus;
+	size_t vegades_punter;
+};
+
 /*1.1* Tota la informació necessària per a les variables.	*/
 struct
 variable
 {
 	char *nom;
 	union valor valor;
+	struct descriptor descriptor;
 };
 
 /*1.1.0* Llista de variables.					*/
@@ -140,7 +148,8 @@ struct
 element_execucio
 {
 	union valor valor;
-	void *punter;		// Per exemple a = 3, trobar a.
+	struct descriptor descriptor;
+	struct variable *punter;		// Per exemple a = 3, trobar a.
 };
 
 /*1.2.0* Per a poder passar més d'un argument a les funcions.	*/
@@ -160,6 +169,7 @@ paraula
 {
 	struct localitzat lloc;	// Saber que fer al executar la paraula.
 	union valor auxiliar;	// Comodí, per guardar diferents valors.
+	struct descriptor descriptor;
 };
 
 /*2.0.0* Llista de paraules.					*/
@@ -190,6 +200,7 @@ descriptor_funcio
 	struct variables local;
 	size_t mida_memoria_execucio;
 	struct codi codi;
+	struct descriptor descriptor;
 };
 
 	/*4*	Dependència amb *3*.	*/

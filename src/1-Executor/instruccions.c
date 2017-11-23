@@ -6,6 +6,7 @@
 void
 codi_a_element_execucio (struct element_execucio *e, struct paraula p)
 {
+	e->descriptor	= p.descriptor;
 	e->valor	= p.auxiliar;
 	e->punter	= NULL;
 }
@@ -13,13 +14,16 @@ codi_a_element_execucio (struct element_execucio *e, struct paraula p)
 void
 variable_a_element_execucio (struct element_execucio *e, struct variable *v)
 {
-	e->valor	=  v->valor;
-	e->punter	= &v->valor;
+	e->descriptor	= v->descriptor;
+	e->valor	= v->valor;
+	e->punter	= v;
 }
 
+// Crear una nova funció, arguments.
 void
 element_execucio_a_variable (struct variable *v, struct element_execucio *e)
 {
+	v->descriptor	= e->descriptor;
 	v->valor	= e->valor;
 }
 
@@ -47,14 +51,14 @@ crear_nova_funcio_dinamica
 
 	// Arguments
 	fd.arguments.mida = n;
-	fd.arguments.punter = malloc ( n * sizeof (struct variable) );
+	fd.arguments.punter = n ? malloc ( n * sizeof (struct variable) ) : NULL;
 	memcpy (fd.arguments.punter, df.arguments.punter, n * sizeof (struct variable) );
 	for (i = 0; i < n; i++)
 		element_execucio_a_variable (fd.arguments.punter +i, e +i);
 
 	// Variables locals
 	fd.local = df.local;
-	fd.local.punter = malloc ( fd.local.mida * sizeof (struct variable) );
+	fd.local.punter = fd.local.mida ? malloc ( fd.local.mida * sizeof (struct variable) ) : NULL;
 	memcpy (fd.local.punter, df.local.punter, fd.local.mida * sizeof (struct variable) );
 
 	pila_afegir (p, &fd);
@@ -110,6 +114,7 @@ obtencio_element_execucio (struct funcio_dinamica *f)
 int
 execucio_paraula (struct pila *p)
 {
+	int aux;
 	struct funcio_dinamica	*f;
 	struct paraula		paraula;
 	struct element_execucio	*e;
@@ -121,13 +126,42 @@ execucio_paraula (struct pila *p)
 	switch (paraula.lloc.on)
 	{
 	case Codi:
+		codi_a_element_execucio (e, paraula);
+		return 1;
+
+	// Variables.
 	case Arguments:
+		variable_a_element_execucio (e, f->arguments.punter + paraula.lloc.relatiu);
+		return 1;
 	case Locals:
+		variable_a_element_execucio (e, f->local.punter + paraula.lloc.relatiu);
+		return 1;
 	case Globals:
+		variable_a_element_execucio (e, variables_globals.punter + paraula.lloc.relatiu);
+		return 1;
+
+	// Funcions.
 	case Funcions:
+		aux = paraula.auxiliar.enter;
+		f->memoria.us -= aux;
+		e -= aux;
+		crear_nova_funcio_dinamica (aux, e, paraula.lloc.relatiu, p);
+		return 1;
 	case Sistema:
+		aux = paraula.auxiliar.enter;
+		f->memoria.us -= aux;
+		e -= aux;
+		return crida_funcio_sistema (paraula.lloc.relatiu, aux, e, f);
 	case Retorn:
+		aux = paraula.auxiliar.enter;
+		e -= aux;
+		if (aux) *f->punter_retorn = *e;
+		if (f->arguments.mida)	free (f->arguments.punter);
+		if (f->local.mida)	free (f->local.punter);
+		free (f->memoria.punter);
+		return --p->us;
 	case NoRetorn:
+	case EndLocalitzacions:
 	default:
 		break;
 	}

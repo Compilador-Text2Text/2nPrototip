@@ -10,7 +10,8 @@ struct pila g_v_s; // Pila global de string.
 // Funcions a modificar si vols tenir en compte:
 // - tipus
 // - Valors nous
-void llegir_tipus_valor (union valor* v);
+
+struct descriptor llegir_tipus_valor (union valor* v);
 char inicialitzar_paraules (struct frase *pf);
 
 void
@@ -30,10 +31,12 @@ comprovacio_caracter (char c, char f)
 	}
 }
 
-void
+// TODO Hauria de llegir quantes vegades punter és.
+struct descriptor
 llegir_tipus_valor (union valor* v)
 {
 	int d;
+	struct descriptor r = {.tipus = CapTipus, .vegades_punter = 0};
 
 	switch ((d = llegir_digit_final ( ' ' )))
 	{
@@ -41,17 +44,25 @@ llegir_tipus_valor (union valor* v)
 		comprovacio_caracter (llegir_linia (), '\'');
 		v->caracter = llegir_linia ();
 		comprovacio_caracter (llegir_linia (), '\'');
+		r.tipus = Char;
 		break;
 
 	case Int:
 		v->enter = llegir_digit_final ( '\n' );
+		r.tipus = Int;
+		break;
+
+	case Pointer:
+		r.tipus = Pointer;
 		break;
 
 	default:
+		// TODO, missatge d'error mal fet.
 		printf ("Esperavem que fos un: Char o un Int.\n");
 		printf ("Int: %d\nChar: %d\nEntrat: %d\n", Int, Char, d);
 		error ("Valor inesperat.");
 	}
+	return r;
 }
 
 void
@@ -71,7 +82,7 @@ definir_variables (struct variables *vs)
 		c = llegir_text_sense_espais_ni_enters (&g_v_s, &v->nom);
 
 		if ( c == '\n' ) continue;
-		llegir_tipus_valor (&v->valor);
+		v->descriptor = llegir_tipus_valor (&v->valor);
 	}
 }
 
@@ -94,7 +105,7 @@ inicialitzar_paraules (struct frase *pf)
 		{
 		case Codi: // Tipus valor
 			pp->lloc.relatiu = 0;
-			llegir_tipus_valor (&pp->auxiliar);
+			pp->descriptor = llegir_tipus_valor (&pp->auxiliar);
 			break;
 
 		case Arguments:
@@ -110,7 +121,7 @@ inicialitzar_paraules (struct frase *pf)
 			break;
 
 		case Retorn:
-			pp->lloc.relatiu = llegir_digit_final ( '\n' );
+			pp->auxiliar.enter = llegir_digit_final ( '\n' );
 			break;
 
 		default:
@@ -185,6 +196,7 @@ llegir_codi_objecte (char (*funcio) (void))
 	while ( c == '<' )
 	{
 		llegir_inici_final ('F', ':' );
+		// TODO Hauria de llegir el tipus de la funció.
 		pdf = descriptors_funcio.punter + llegir_digit_final ( '\n' );
 
 		// Nom i mida de la memoria d'execució
