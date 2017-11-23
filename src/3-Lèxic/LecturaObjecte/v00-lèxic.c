@@ -84,6 +84,13 @@ inicialitzar_paraules (struct frase *pf)
 		// Que fer.
 		d = llegir_digit_final_comenzat (c, ' ');
 		pp->lloc.on = d;
+
+		// Defineixo del tot per evitar errors del valgrind.
+		pp->lloc.relatiu = 0;
+		pp->descriptor.tipus = CapTipus;
+		pp->descriptor.vegades_punter = 0;
+		pp->auxiliar.enter = 0;
+
 		switch (d)
 		{
 		case Codi: // Tipus valor
