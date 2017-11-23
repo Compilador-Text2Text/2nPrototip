@@ -19,7 +19,7 @@ EXECUTOR_DESCRIPTOR_H_	=			\
 	$(FILE_EXECUTOR)/descriptor.h		\
 
 # Executor
-EXECUTOR_EXECUTOR_C_	= $(FILE_EXECUTOR)/executor.c
+EXECUTOR_EXECUTOR_C_	= $(FILE_EXECUTOR)/descriptor.c
 EXECUTOR_EXECUTOR_H_	=			\
 	$(FILE_EXECUTOR)/executor.h		\
 	$(EXECUTOR_DESCRIPTOR_H_)		\

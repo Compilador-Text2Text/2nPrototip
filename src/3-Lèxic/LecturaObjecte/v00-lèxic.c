@@ -114,7 +114,9 @@ inicialitzar_paraules (struct frase *pf)
 			break;
 
 		default:
-		break;
+			printf ("Valor màxim esperat: %u, valor entrat: %d", EndLocalitzacions, d);
+			error ("Instrucció inesperada. Usi '-hf' per tenir ajuda.");
+			break;
 		}
 	}
 

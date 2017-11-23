@@ -18,7 +18,7 @@ char ** inicialitzar_vector_strings (int i)
 void
 inicialitzar_localitzacions (void)
 {
-	localitzat = inicialitzar_vector_strings (EndLocalitzacions);
+	localitzat = inicialitzar_vector_strings (EndLocalitzacions +1);
 
 	localitzat[Codi]	= "codi";
 
@@ -31,17 +31,22 @@ inicialitzar_localitzacions (void)
 	localitzat[Retorn]	= "f. retorn";
 
 	localitzat[NoRetorn]	= "e. no hi ha retorn";
+
+	localitzat[EndLocalitzacions] = "Final";
 }
 
 void
 inicialitzar_tipus (void)
 {
-	tipus = inicialitzar_vector_strings (EndTipus);
+	tipus = inicialitzar_vector_strings (EndTipus +1);
 
 	tipus[Void]	= "void";
 	tipus[Char]	= "char";
 	tipus[Int]	= "int";
+	tipus[Float]	= "float";
 	tipus[Pointer]	= "punter";
+
+	tipus[EndTipus]	= "Final";
 }
 
 void
@@ -49,7 +54,7 @@ mostra_localitzacions (void)
 {
 	int i;
 
-	for (i = 0; i < EndLocalitzacions; i++)
+	for (i = 0; i < EndLocalitzacions +1; i++)
 		if (localitzat[i])
 			printf ("-%2d '%s'\n", i, localitzat[i]);
 }
@@ -59,7 +64,7 @@ mostra_tipus (void)
 {
 	int i;
 
-	for (i = 0; i < EndTipus; i++)
+	for (i = 0; i < EndTipus +1; i++)
 		if (tipus[i])
 			printf ("-%2d '%s'\n", i, tipus[i]);
 }

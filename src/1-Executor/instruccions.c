@@ -131,6 +131,5 @@ execucio_paraula (struct pila *p)
 	default:
 		break;
 	}
-	crida_funcio_sistema (1, 2, NULL, f);
 	return 0;
 }
