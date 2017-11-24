@@ -152,15 +152,3 @@ llegir_digit_final_comenzat (char c, char f)
 
 	return o;
 }
-
-// Versió 01
-void comprovacio_caracter_1 (char esperat, char *missatge_error_general, int quina_funcio, char*missatge_concret)
-{
-	char c;
-
-	if ((c = llegir_linia ()) == esperat) return;
-	printf ("De on venim:\n%s\n", missatge_error_general);
-}
-void llegir_inici_final_1 (char inici, char final, char *missatge_error_general, int quina_funcio, char*missatge_concret)
-{
-}

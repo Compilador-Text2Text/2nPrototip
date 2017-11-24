@@ -20,6 +20,8 @@ int main (int argc, char *argv[])
 	enum tipus_execucio
 	{
 		Simple,
+		V0,
+		V1,
 		Cap
 	} exec = Cap;
 
@@ -27,11 +29,9 @@ int main (int argc, char *argv[])
 	for (i = 1; i < argc; i++)
 	{
 		// Descriu quin fitxer llegirà.
-		if ( !strcmp ("-f", argv[i]) )
-		{
-			exec = Simple;
-			nom = argv[++i];
-		}
+		if ( !strcmp ("-f", argv[i]) ) nom = argv[++i];
+		else if ( !strcmp ("v0", argv[i]) ) exec = V0;
+		else if ( !strcmp ("v1", argv[i]) ) exec = V1;
 
 		// Mostrarà com estan definits els elements. "enums"
 		else if ( !strcmp ("-hf", argv[i]) )
@@ -56,6 +56,7 @@ int main (int argc, char *argv[])
 				else
 					arguments[out] = argv[i];
 		}
+
 		else
 		{
 			printf ("Desconegut: '%s'\n", argv[i]);
@@ -66,8 +67,15 @@ int main (int argc, char *argv[])
 
 	switch (exec)
 	{
-	case Simple:
+	case V0:
 		out = inicialitzador_lectura_objecte (nom, nombre_arguments, arguments);
+		finalitza_allibera_memoria ();
+		if (arguments)
+			free (arguments);
+		return out;
+
+	case V1:
+		out = inicialitzador_lectura_objecte_1 (nom, nombre_arguments, arguments);
 		finalitza_allibera_memoria ();
 		if (arguments)
 			free (arguments);

@@ -1,6 +1,8 @@
+#include "maquina_estats_v01.h"
 #include "v01-lèxic.h"
-#include "maquina_estats.h"
+
 #include "../../1-Executor/descriptor.h"
+#include "../../9-Util/pila.h"
 
 struct pila g_v_s; // Per poder llegir els noms.
 
@@ -29,7 +31,7 @@ Tot seguit de ':' va el dígit per reservar memòria per les variables.\
 void
 llegir_codi_objecte_v01 (char (*funcio) (void), enum lexic_v01 estat)
 {
-	descriu_lectura (funcio);
+	descriu_lectura_1 (funcio);
 	g_v_s = pila_inicialitzar (100, sizeof (char));
 
 	definir_variables_i_declarar ('v', &variables_globals, "Declarant les variables globals", -1);

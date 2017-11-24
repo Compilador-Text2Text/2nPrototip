@@ -115,6 +115,9 @@ $(LEXIC_V01_O_): $(LEXIC_V01_C_)
 $(LEXIC_ESTATS_O_): $(LEXIC_ESTATS_C_) $(UTILS_PILA_H_)
 	gcc $(LEXIC_ESTATS_C_) $(GLIBS) -o $(LEXIC_ESTATS_O_)
 
+$(LEXIC_ESTATS_v1_O_): $(LEXIC_ESTATS_v1_C_)
+	gcc $(LEXIC_ESTATS_v1_C_) $(GLIBS) -o $(LEXIC_ESTATS_v1_O_)
+
 ####################     Interpret     ####################
 $(OBJDIR)/main.o: main.c # $(MK_INTERPRET)
 	gcc main.c $(GLIBS) -o $(OBJDIR)/main.o

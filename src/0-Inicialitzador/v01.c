@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "../2-Funció-de-sistema/inicialitzador.h"
 #include "../3-Lèxic/LecturaObjecte/v01-lèxic.h"
@@ -13,13 +14,21 @@ struct pila g_e_s;	// Pila global de string pels errors.
 FILE *
 inicialitza_lecura_fitxer_1 (char *nom)
 {
-	FILE *pf = fopen (nom, "r");
+	FILE *pf;
+	struct stat s;
 
-	if (!pf)
+	if ( stat (nom, &s) )
 	{
-		printf ("El fitxer: %s\nNo existex o no tenim permisos d'accés.\n", nom);
+		printf ("El fitxer: %s\nNo existeix o no tenim permisos d'accés.\n", nom);
 		exit (EXIT_FAILURE);
 	}
+	if (!S_ISREG (s.st_mode))
+	{
+		printf ("No és un fitxer: %s\nNomés podem interpretar fitxers.\n", nom);
+		exit (EXIT_FAILURE);
+	}
+
+	pf = fopen (nom, "r");
 	g_f = 1;
 	g_e_s = pila_inicialitzar (100, sizeof (char));
 
@@ -47,5 +56,8 @@ int inicialitzador_lectura_objecte_1 (char *nom, int argc, char**argv)
 	inicialitza_funcions_sistema ();
 	inicialitzar_depurador ();
 
+	g_pf = inicialitza_lecura_fitxer_1 (nom);
+		llegir_codi_objecte_v01 (lectura_fitxer_1, l_v01_normal);
+	fclose (g_pf);
 	return 0;
 }
