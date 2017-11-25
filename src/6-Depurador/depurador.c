@@ -41,6 +41,7 @@ inicialitzar_tipus (void)
 {
 	tipus = inicialitzar_vector_strings (EndTipus +1);
 
+	tipus[CapTipus]	= "NT";
 	tipus[Void]	= "void";
 	tipus[Char]	= "char";
 	tipus[Int]	= "int";

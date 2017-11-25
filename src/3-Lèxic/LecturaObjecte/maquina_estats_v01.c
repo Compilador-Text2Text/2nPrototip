@@ -45,6 +45,7 @@ llegir_fins_1 (char c, char* general, int quina_funcio, char *concret)
 	while ((i = llegir_caracter_1 ()) != EOF)
 		if ( i == c )
 			return;
+		// Ja que pot ésser c = '\n'.
 		else if ( i == '\n' )
 			break;
 
@@ -54,7 +55,7 @@ llegir_fins_1 (char c, char* general, int quina_funcio, char *concret)
 	error_procedencia (general, quina_funcio, concret);
 }
 
-// (Comentaris)
+// (Comentaris) ≡ (#[^\n]*\n|[ \n\t])*
 char
 llegir_linia_1 (char *general, char *concret, int lloc)
 {
@@ -105,21 +106,85 @@ llegir_inici_final_1 (char p, char s, char f, char *general, int lloc, char*conc
 	llegir_fins_1 (f, general, lloc, concret);
 }
 
-// \d*\n
 int
-llegir_digit_final_1 (char f, char *general, int lloc, char *concret)
+llegir_digit (char *e, char *general, int lloc, char *concret)
 {
 	int o = 0;
 	char c;
 
 	while (isdigit((c = llegir_caracter_1 ()))) o = c - '0' + o*10;
+
+	*e = c;
+
+	return o;
+}
+
+// \d*'f'
+int
+llegir_digit_final_1 (char f, char *general, int lloc, char *concret)
+{
+	char c;
+	int o = llegir_digit ( &c, general, lloc, concret);
 	comprovacio_caracter_amb_2 (f, c, general, lloc, concret);
 
 	return o;
 }
 
+int
+llegir_digit_final_limitat_1 ( char f, int maxim, char*general, int lloc, char*concret )
+{
+	int d = llegir_digit_final_1 (f, general, lloc, concret);
+
+	if ( d >= maxim )
+	{
+		printf ("Màxim i entrat: %d >(hauria) %d\n", maxim, d);
+		printf ("Per ajuda usi -hf\n");
+		error_procedencia (general, lloc, concret);
+	}
+
+	return d;
+}
+
+int
+llegir_digit_pos_neg (char *p, char *general, int lloc, char *concret)
+{
+	int o = 0, negatiu = 0;
+	char c = llegir_caracter_1 ();
+
+	if ( c == '-' ) negatiu = 1;
+	else if ( isdigit (c) )
+		o = c - '0';
+	else
+		error_procedencia (general, lloc, concret);
+
+	while (isdigit((c = llegir_caracter_1 ()))) o = c - '0' + o*10;
+
+	*p = c;
+	if (negatiu) o = -o;
+
+	return o;
+}
+
+float
+llegir_digit_float (char *c, char *general, int lloc, char *concret)
+{
+	float r, s = 0;
+	int i;
+
+	r = llegir_digit_pos_neg (c, general, lloc, concret);
+	if ( *c == '.' )
+	{
+		// M'he dit que era més fàcil dividint que fent logaritmes.
+		i = g_e_s.us;
+		s = llegir_digit (c, general, lloc, concret);
+		s /= pow (
+	}
+
+	return r;
+}
+
 // (comentari)"[^\n ]*
-// Guarda el resultat en s.
+// Guarda el resultat en s, pensat pels noms, ja que no volem espais ni enters.
 char
 llegir_text_sense_espais_ni_intro (struct pila *p, char **s, char*general, int lloc, char*concret)
 {
@@ -137,6 +202,47 @@ llegir_text_sense_espais_ni_intro (struct pila *p, char **s, char*general, int l
 	pila_afegir (p, &e);
 
 	*s = strdup (p->punter);
+
+	return c;
+}
+
+// "(\"|[^"])*" approx, perquè "\\" No funciona.
+char *
+llegir_text (struct pila *p, char*general, int lloc, char*concret)
+{
+	char c, e = '\0';
+	int estat = 0;
+
+	comprovacio_caracter_1 ('"', general, lloc, concret);
+	p->us = 0; // Inicialitzem la pila.
+
+	while ((c = llegir_caracter_1 ()) != EOF)
+		if ( estat )
+		{
+			estat = 0;
+			pila_afegir (p, &c);
+		} else if ( c == '"' )
+		{
+			pila_afegir (p, &e);
+			return strdup (p->punter);
+		} else if ( c == '\\' )
+			estat = 1;
+		else
+			pila_afegir (p, &c);
+
+	error_final_1 (general, lloc, concret);
+	return p->punter; // Evitar warnigs del compilador. Mai pot arribar aquí.
+}
+
+// '.'
+char
+llegir_caracter_facil (char *general, int lloc, char *concret)
+{
+	char c;
+
+	comprovacio_caracter_1 ('\'', general, lloc, concret);
+	c = llegir_caracter_1 ();
+	comprovacio_caracter_1 ('\'', general, lloc, concret);
 
 	return c;
 }

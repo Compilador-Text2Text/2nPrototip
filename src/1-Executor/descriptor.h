@@ -11,6 +11,7 @@
  * 0.2		Tipus		{Char, Int, Void}
  * 0.3		Sistema		Noms de funcions del sistema.
  * 0.4		enumerador SYA	{Valor, Funció, Operador, …}
+ * 0.5		Cert fals	Per saber si és verdader.
  *
  * 1	Amb dependències amb *0*.
  * 1.0		Localitzat	Saber on està.
@@ -107,6 +108,14 @@ estats_sya
 	Operador_associacio_dreta,	// ^, =
 
 };
+
+/*0.5* Serveix per a saber si ha passat o no.			*/
+enum
+cert_fals
+{
+	Fals		= 0,
+	Cert		= 1
+};
 	/*1*	Dependència amb *0*.	*/
 /*1.0* Saber exactament on està la informació.			*/
 // Usat: (2.0)paraula.
@@ -131,6 +140,8 @@ variable
 	char *nom;
 	union valor valor;
 	struct descriptor descriptor;
+	enum cert_fals inicialitzat;
+	enum cert_fals usat;
 };
 
 /*1.1.0* Llista de variables.					*/

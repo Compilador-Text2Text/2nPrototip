@@ -66,5 +66,7 @@ int inicialitzador_lectura_objecte_1 (char *nom, int argc, char**argv)
 	g_pf = inicialitza_lecura_fitxer_1 (nom);
 		llegir_codi_objecte_v01 (lectura_fitxer_1, l_v01_normal);
 	fclose (g_pf);
+
+	pila_alliberar (&g_e_s);
 	return 0;
 }
