@@ -10,6 +10,7 @@
 FILE *g_pf;		// punter de fitxer, variable global.
 int g_f;		// global fila.
 struct pila g_e_s;	// Pila global de string pels errors.
+int bool_lectura;	// Saber quan reiniciar g_e_s.
 
 FILE *
 inicialitza_lecura_fitxer_1 (char *nom)
@@ -28,25 +29,31 @@ inicialitza_lecura_fitxer_1 (char *nom)
 		exit (EXIT_FAILURE);
 	}
 
+	// Inicialitzem les 4 variables globals.
 	pf = fopen (nom, "r");
 	g_f = 1;
+	bool_lectura = 0;
 	g_e_s = pila_inicialitzar (100, sizeof (char));
 
 	return pf;
 }
 
 char
-lectura_fitxer_1 ()
+lectura_fitxer_1 (void)
 {
-	char c;
+	char c = getc (g_pf);
 
-	pila_afegir (&g_e_s, &c);
-
-	if ((c = getc (g_pf)) == '\n')
+	if ( c == '\n' )
+		bool_lectura = 1;
+	else if ( bool_lectura )
 	{
+		bool_lectura = 0;
 		g_f++;
 		g_e_s.us = 0;
 	}
+	if ( c == EOF ) return c;
+
+	pila_afegir (&g_e_s, &c);
 
 	return c;
 }

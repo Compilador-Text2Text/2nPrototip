@@ -9,14 +9,20 @@ struct pila g_v_s; // Per poder llegir els noms.
 void
 definir_variables_i_declarar (char b, struct variables *vs, char *m_error, int lloc)
 {
-	comprovacio_caracter_1 ('-', m_error, lloc,
-			"Per demanar declarar les variables, cal començar amb '-'");
-	llegir_inici_final_1 (b, ':', m_error, lloc,
-"Ha començat bé: '-'.\
-Continua amb: '%c' i ha entrat: '%c'.\
-On acaba amb: ':' i ha entrat: '%c'.\
-Tot seguit de ':' va el dígit per reservar memòria per les variables.\
-");
+	int mida, i;
+	char c;
+	struct variable *v;
+
+	llegir_inici_final_1 ('-', b, ':', m_error, lloc, "On \"-[va][^:\\n]:\" és el missatge esperat.");
+
+	vs->mida = mida = llegir_digit_final_1 ( '\n', m_error, lloc, "On tot seguit ':' esperem: \"d+\\n\"" );
+	vs->punter = mida ? malloc ( mida * sizeof (struct variable) ) : NULL;
+
+	for (i = 0; i < mida; i++)
+	{
+		v = vs->punter +i;
+		c = llegir_text_sense_espais_ni_intro (&g_v_s, &v->nom, m_error, lloc, "Volem el nom \"[^(comentari)]*");
+	}
 }
 /*
 	int i;
