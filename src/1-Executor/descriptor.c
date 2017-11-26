@@ -2,4 +2,4 @@
 
 struct variables variables_globals;
 struct llista_descriptors descriptors_funcio;
-struct llista_sistema funcions_sistema;
+struct llista_sistema funcions_sistema, funcions_especials_sistema;

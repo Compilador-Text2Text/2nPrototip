@@ -30,6 +30,8 @@ inicialitzar_localitzacions (void)
 	localitzat[Funcions]	= "f. funcions";
 	localitzat[Sistema]	= "f. sistema";
 	localitzat[Retorn]	= "f. retorn";
+	localitzat[Retorn_final]	= "f. exit";
+	localitzat[Funcions_especials]	= "f. 'while, for, if'";
 
 	localitzat[NoRetorn]	= "e. no hi ha retorn";
 

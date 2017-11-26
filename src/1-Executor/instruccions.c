@@ -116,7 +116,7 @@ obtencio_element_execucio (struct funcio_dinamica *f)
 int
 execucio_paraula (struct pila *p)
 {
-	int aux;
+	int aux, aux2;
 	struct funcio_dinamica	*f;
 	struct paraula		paraula;
 	struct element_execucio	*e;
@@ -164,7 +164,28 @@ mostra_memoria_execucio (p);
 		if (f->local.mida)	free (f->local.punter);
 		free (f->memoria.punter);
 		return --p->us;
+	case Retorn_final:
+		aux = paraula.auxiliar.enter;
+		e -= aux;
+		if (aux) aux2 = e->valor.enter;
+
+		if (f->arguments.mida)	free (f->arguments.punter);
+		if (f->local.mida)	free (f->local.punter);
+		free (f->memoria.punter);
+
+		while (p->us--)
+		{
+			f = pila_mostra (p);
+
+			if (f->arguments.mida)	free (f->arguments.punter);
+			if (f->local.mida)	free (f->local.punter);
+			free (f->memoria.punter);
+		}
+
+		if (aux) f->punter_retorn->valor.enter = aux2;
+		return 0;
 	case NoRetorn:
+	case Funcions_especials:
 	case EndLocalitzacions:
 	default:
 		break;

@@ -62,6 +62,8 @@ localitzacions
 	Funcions,	// Creació d'una funció pròpia.
 	Sistema,	// Funció pròpia del compilador.
 	Retorn,		// Retorn del resultat d'una funció pròpia.
+	Retorn_final,	// Retorn like exit.
+	Funcions_especials,	// while, for, if.
 
 	NoRetorn,	// Error, no queden frases.
 
@@ -236,6 +238,8 @@ funcio_sistema
 {
 	char *nom;
 	int (*funcio) (size_t, struct element_execucio *, struct funcio_dinamica *);
+	struct descriptor descriptor;
+	struct variables arguments;
 };
 
 /* Executar el codi */
@@ -249,5 +253,6 @@ extern struct llista_sistema
 {
 	size_t mida;
 	struct funcio_sistema *punter;
-} funcions_sistema;
+} funcions_sistema, funcions_especials_sistema;
+
 #endif // DESCRIPTOR_PER_L_EXECUTOR_H_

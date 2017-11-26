@@ -1,22 +1,44 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "funcions.h"
 #include "../1-Executor/descriptor.h"
+#include "../9-Util/memoria.h"
+
+void
+definir_funcio_sistema (int lloc, char *nom,
+		int (*funcio) (size_t, struct element_execucio *, struct funcio_dinamica *),
+		struct variables arguments,
+		struct descriptor descriptor)
+{
+	struct funcio_sistema *f;
+	f = funcions_sistema.punter + lloc;
+	f->nom = nom;
+	f->funcio = funcio;
+	f->descriptor = descriptor;
+
+	f->arguments = arguments;
+	f->arguments.punter = reservar_memoria_i_copiarla ( arguments.punter, arguments.mida * sizeof (struct variable) );
+}
 
 void
 inicialitza_funcions_sistema (void)
 {
-	struct funcio_sistema *fs;
+	struct descriptor descriptor = {.tipus = Void, .vegades_punter = 0};
+	struct variables vs = {.mida = 2};
+
 	funcions_sistema.mida = End_sistema;
 	funcions_sistema.punter = malloc ( End_sistema * sizeof (struct funcio_sistema) );
 
-	fs = funcions_sistema.punter + Igual_general;
-	fs->nom		= "Igual general (=)";
-	fs->funcio	= igual_general;
+	vs.punter = malloc (vs.mida * sizeof (struct variable));
+	vs.punter[0].descriptor = descriptor;
+	vs.punter[1].descriptor = descriptor;
 
-	fs = funcions_sistema.punter + Extreure_punter;
-	fs->nom		= "Extreure punter (&(var))";
-	fs->funcio	= extreu_punter;
+	// Declarant funcions.
+	definir_funcio_sistema (Igual_general, "=", igual_general, vs, descriptor);
+
+	descriptor.vegades_punter = 1;
+	definir_funcio_sistema (Extreure_punter, "&", extreu_punter, vs, descriptor);
 }
 
 void

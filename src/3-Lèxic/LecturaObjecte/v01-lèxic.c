@@ -99,9 +99,50 @@ definir_variables_i_declarar (char b, struct variables *vs, char *m_error, int l
 }
 
 void
-definir_paraula (struct paraula *p, char *m_error, int lloc)
+variable_a_paraula (struct paraula *p, struct variables vs, char *m_error, int lloc, char *concret)
 {
 	int maxim;
+
+	maxim = vs.mida;
+	p->lloc.relatiu = llegir_digit_final_limitat_1 ( '\n', maxim, m_error, lloc, concret);
+
+	p->descriptor = vs.punter[p->lloc.relatiu].descriptor;
+	p->auxiliar.enter = 0;
+}
+
+void
+funcio_a_paraula (struct paraula *p, char *m_error, int lloc, char *concret)
+{
+	p->lloc.relatiu = llegir_digit_final_1 ( '\n', m_error, lloc, concret );
+
+	// No podem dir res, ja que encara no estan totes les funcions declarades!
+	// TODO SYA tocarà definir aquests valors!
+	p->descriptor.tipus = CapTipus;
+	p->descriptor.vegades_punter = 0;
+	p->auxiliar.enter = 0;
+}
+
+void
+sistema_a_paraula ( struct paraula *p, struct llista_sistema l, char *m_error, int lloc, char *concret )
+{
+	p->lloc.relatiu = llegir_digit_final_limitat_1 ( '\n', l.mida, m_error, lloc, concret );
+	p->descriptor = l.punter[p->lloc.relatiu].descriptor;
+	p->auxiliar.enter = l.punter[p->lloc.relatiu].arguments.mida;
+}
+
+void
+retorn_a_paraula ( struct paraula *p, char *m_error, int lloc, char *concret)
+{
+	p->auxiliar.enter = llegir_digit_final_1 ( '\n', m_error, lloc, concret );
+
+	p->lloc.relatiu = 0;
+	p->descriptor.tipus = Int;
+	p->descriptor.vegades_punter = 0;
+}
+
+void
+definir_paraula (struct paraula *p, char *m_error, int lloc)
+{
 	struct variables vs;
 
 	p->lloc.on = llegir_digit_final_limitat_comentari ( ' ', EndLocalitzacions, m_error, lloc, "Localitzacions, per més ajuda usi \"-hf\"." );
@@ -116,13 +157,33 @@ definir_paraula (struct paraula *p, char *m_error, int lloc)
 
 	case Arguments:
 		vs = descriptors_funcio.punter[lloc].arguments;
-		maxim = vs.mida;
-		p->lloc.relatiu = llegir_digit_final_limitat_1 ( '\n', maxim, m_error, lloc, "Lloc relatiu de l'argument.");
-		p->descriptor = vs.punter[p->lloc.relatiu].descriptor;
-		p->auxiliar.enter = 0;
+		variable_a_paraula (p, vs, m_error, lloc, "Lloc relatiu de l'argument.");
 		break;
+	case Locals:
+		vs = descriptors_funcio.punter[lloc].local;
+		variable_a_paraula (p, vs, m_error, lloc, "Lloc relatiu de les variables.");
+		break;
+	case Globals:
+		vs = variables_globals;
+		variable_a_paraula (p, vs, m_error, lloc, "Llegint de les variables globals.");
+		break;
+
+	case Funcions:
+		funcio_a_paraula (p, m_error, lloc, "Llegint relatiu de funcions d'usuari.");
+		break;
+	case Sistema:
+		sistema_a_paraula (p,funcions_sistema, m_error, lloc, "Llegint relatiu de funcions de sistema.");
+		break;
+	case Retorn:
+	case Retorn_final:
+		retorn_a_paraula (p, m_error, lloc, "Llegint que retorna.");
+		break;
+	case Funcions_especials:
+		sistema_a_paraula (p, funcions_especials_sistema, m_error, lloc, "Llegint funció especial.");
+		break;
+	default:
+		error_procedencia (m_error, lloc, "Valor inesperat per localització. Més informació premi '-hf'.");
 	}
-	//p->lloc
 }
 /*
 	struct localitzat lloc;	// Saber que fer al executar la paraula.
