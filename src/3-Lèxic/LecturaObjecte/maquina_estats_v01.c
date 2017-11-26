@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -107,9 +108,8 @@ llegir_inici_final_1 (char p, char s, char f, char *general, int lloc, char*conc
 }
 
 int
-llegir_digit (char *e, char *general, int lloc, char *concret)
+llegir_digit_comenzat_1 (int o, char *e, char *general, int lloc, char *concret)
 {
-	int o = 0;
 	char c;
 
 	while (isdigit((c = llegir_caracter_1 ()))) o = c - '0' + o*10;
@@ -119,47 +119,103 @@ llegir_digit (char *e, char *general, int lloc, char *concret)
 	return o;
 }
 
-// \d*'f'
 int
-llegir_digit_final_1 (char f, char *general, int lloc, char *concret)
+llegir_digit_final_comenzat_1 (int o, char f, char *general, int lloc, char *concret)
 {
 	char c;
-	int o = llegir_digit ( &c, general, lloc, concret);
+	o = llegir_digit_comenzat_1 (o, &c, general, lloc, concret);
 	comprovacio_caracter_amb_2 (f, c, general, lloc, concret);
 
 	return o;
 }
 
 int
+llegir_digit (char *e, char *general, int lloc, char *concret)
+{
+	return llegir_digit_comenzat_1 (0, e, general, lloc, concret);
+}
+
+
+int
+llegir_digit_comentaris (char *e, char *general, int lloc, char *concret)
+{
+	int o = 0;
+	char c;
+
+	if (isdigit((c = llegir_linia_1 (general, concret, lloc))))
+		return llegir_digit_comenzat_1 (c-'0', e, general, lloc, concret);
+
+	*e = c;
+
+	return o;
+}
+
+
+// \d*'f'
+int
+llegir_digit_final_1 (char f, char *general, int lloc, char *concret)
+{
+	return llegir_digit_final_comenzat_1 (0, f, general, lloc, concret);
+}
+
+int
+llegir_digit_final_comentari (char f, char *general, int lloc, char *concret)
+{
+	char c;
+	int o;
+
+	o = llegir_digit_comentaris (&c, general, lloc, concret);
+	comprovacio_caracter_amb_2 (f, c, general, lloc, concret);
+
+	return o;
+}
+
+void
+vigilar_limit (int entrada, int maxim, char *general, int lloc, char *concret)
+{
+	if ( entrada < maxim ) return;
+
+	printf ("Màxim i entrat: %d >(hauria) %d\n", maxim, entrada);
+	printf ("Per ajuda usi -hf\n");
+	error_procedencia (general, lloc, concret);
+}
+
+int
 llegir_digit_final_limitat_1 ( char f, int maxim, char*general, int lloc, char*concret )
 {
 	int d = llegir_digit_final_1 (f, general, lloc, concret);
-
-	if ( d >= maxim )
-	{
-		printf ("Màxim i entrat: %d >(hauria) %d\n", maxim, d);
-		printf ("Per ajuda usi -hf\n");
-		error_procedencia (general, lloc, concret);
-	}
-
+	vigilar_limit ( d, maxim, general, lloc, concret);
 	return d;
+}
+
+int
+llegir_digit_final_limitat_comentari ( char f, int maxim, char *general, int lloc, char *concret )
+{
+	int o;
+
+	o = llegir_digit_final_comentari ( f, general, lloc, concret );
+	vigilar_limit ( o, maxim, general, lloc, concret);
+
+	return o;
 }
 
 int
 llegir_digit_pos_neg (char *p, char *general, int lloc, char *concret)
 {
-	int o = 0, negatiu = 0;
+	int o, negatiu = 0;
 	char c = llegir_caracter_1 ();
 
-	if ( c == '-' ) negatiu = 1;
-	else if ( isdigit (c) )
-		o = c - '0';
+	if ( c == '-' )
+	{
+		negatiu = 1;
+		c = llegir_caracter_1 ();
+	}
+
+	if ( isdigit (c) )
+		o = llegir_digit_comenzat_1 (c-'0', p, general, lloc, concret);
 	else
 		error_procedencia (general, lloc, concret);
 
-	while (isdigit((c = llegir_caracter_1 ()))) o = c - '0' + o*10;
-
-	*p = c;
 	if (negatiu) o = -o;
 
 	return o;
@@ -175,9 +231,10 @@ llegir_digit_float (char *c, char *general, int lloc, char *concret)
 	if ( *c == '.' )
 	{
 		// M'he dit que era més fàcil dividint que fent logaritmes.
-		i = g_e_s.us;
+		i = g_e_s.us +1;
 		s = llegir_digit (c, general, lloc, concret);
-		s /= pow (
+		s /= pow (10., g_e_s.us -i);
+		r += s;
 	}
 
 	return r;

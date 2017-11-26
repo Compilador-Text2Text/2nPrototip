@@ -189,7 +189,7 @@ llegir_codi_objecte (char (*funcio) (void))
 		// TODO Hauria de llegir el tipus de la funció.
 		pdf = descriptors_funcio.punter + llegir_digit_final ( '\n' );
 
-		// Nom i mida de la memoria d'execució
+		// Nom i mida de la memòria d'execució
 		c = llegir_text_sense_espais_ni_enters (&g_v_s, &pdf->nom);
 		comprovacio_caracter (c , ' ');
 		pdf->mida_memoria_execucio = llegir_digit_final ('\n');

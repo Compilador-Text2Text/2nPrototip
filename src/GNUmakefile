@@ -123,7 +123,7 @@ $(OBJDIR)/main.o: main.c # $(MK_INTERPRET)
 	gcc main.c $(GLIBS) -o $(OBJDIR)/main.o
 
 $(OBJDIR)/interpret: $(OBJECT) # $(MK_ALL)
-	gcc $(OBJECT) $(LIBS) -o $(OBJDIR)/interpret
+	gcc $(OBJECT) $(LIBS) -o $(OBJDIR)/interpret -l m
 
 ####################     Depurador     ####################
 $(DEPURADOR_DEPURADOR_O_): $(DEPURADOR_DEPURADOR_C_)

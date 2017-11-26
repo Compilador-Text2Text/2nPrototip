@@ -17,6 +17,7 @@ void llegir_inici_final_1 (char p, char s, char f, char *missatge_error_general,
 int llegir_digit (char *d, char *general, int lloc, char *concret);
 int llegir_digit_final_1 (char c, char *missatge_error, int funcio, char *missatge_concret);
 int llegir_digit_final_limitat_1 ( char f, int maxim, char*general, int lloc, char*concret );
+int llegir_digit_final_limitat_comentari ( char f, int maxim, char *general, int lloc, char *concret );
 
 int llegir_digit_pos_neg (char *general, int lloc, char *concret);
 float llegir_digit_float (char *c, char *general, int lloc, char *concret);

@@ -4,3 +4,14 @@
 	"nom 3 3
 	"tutu 2 1
 	"cucu 4 0 3.123
+
+-funcions:1
+<F:"main 3 0 20
+	-a:2
+		"argc 3 0
+		"argv 2 2
+	-v:
+	-c:1
+		-f:2
+			0 2 0 'h'
+			1 0
