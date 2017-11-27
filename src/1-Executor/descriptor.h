@@ -175,6 +175,12 @@ memoria_execucio
 	struct element_execucio *punter;
 };
 
+struct
+descriptor_argument
+{
+	size_t mida;
+	struct descriptor *punter;
+};
 	/*2*	Dependència amb *1*.	*/
 /*2.0* Tota la informació necessària per a ser executat.	*/
 struct
@@ -239,7 +245,7 @@ funcio_sistema
 	char *nom;
 	int (*funcio) (size_t, struct element_execucio *, struct funcio_dinamica *);
 	struct descriptor descriptor;
-	struct variables arguments;
+	// struct variables arguments; TODO, pendent!
 };
 
 /* Executar el codi */

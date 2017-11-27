@@ -58,12 +58,37 @@ lectura_fitxer_1 (void)
 	return c;
 }
 
-int inicialitzador_lectura_objecte_1 (char *nom, int argc, char**argv)
+char
+lectura_fitxer_verbos (void)
+{
+	char c = getc (g_pf);
+
+	if ( c == '\n' )
+		bool_lectura = 1;
+	else if ( bool_lectura )
+	{
+		bool_lectura = 0;
+		g_f++;
+		g_e_s.us = 0;
+	}
+	if ( c == EOF ) return c;
+
+printf ("%c", c); // verbos
+	pila_afegir (&g_e_s, &c);
+
+	return c;
+}
+
+int
+inicialitzador_lectura_objecte_1 (char *nom, int argc, char**argv, int verbos)
 {
 	inicialitza_funcions_sistema ();
 	inicialitzar_depurador ();
 
 	g_pf = inicialitza_lecura_fitxer_1 (nom);
+	if (verbos)
+		llegir_codi_objecte_v01 (lectura_fitxer_verbos, l_v01_normal);
+	else
 		llegir_codi_objecte_v01 (lectura_fitxer_1, l_v01_normal);
 	fclose (g_pf);
 

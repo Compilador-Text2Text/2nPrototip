@@ -127,7 +127,7 @@ sistema_a_paraula ( struct paraula *p, struct llista_sistema l, char *m_error, i
 {
 	p->lloc.relatiu = llegir_digit_final_limitat_1 ( '\n', l.mida, m_error, lloc, concret );
 	p->descriptor = l.punter[p->lloc.relatiu].descriptor;
-	p->auxiliar.enter = l.punter[p->lloc.relatiu].arguments.mida;
+	p->auxiliar.enter = 0; // TODO l.punter[p->lloc.relatiu].arguments.mida;
 }
 
 void

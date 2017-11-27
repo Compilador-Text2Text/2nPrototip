@@ -14,6 +14,7 @@ missatge_error (void)
 int main (int argc, char *argv[])
 {
 	int out, i;
+	int verbos_lexic = 0;
 	char *nom = NULL;
 	int nombre_arguments = 0;
 	char **arguments = NULL;
@@ -32,6 +33,7 @@ int main (int argc, char *argv[])
 		if ( !strcmp ("-f", argv[i]) ) nom = argv[++i];
 		else if ( !strcmp ("v0", argv[i]) ) exec = V0;
 		else if ( !strcmp ("v1", argv[i]) ) exec = V1;
+		else if ( !strcmp ("-vl", argv[i]) ) verbos_lexic = 1;
 
 		// Mostrarà com estan definits els elements. "enums"
 		else if ( !strcmp ("-hf", argv[i]) )
@@ -57,6 +59,7 @@ int main (int argc, char *argv[])
 					arguments[out] = argv[i];
 		}
 
+
 		else
 		{
 			printf ("Desconegut: '%s'\n", argv[i]);
@@ -75,8 +78,8 @@ int main (int argc, char *argv[])
 		return out;
 
 	case V1:
-		out = inicialitzador_lectura_objecte_1 (nom, nombre_arguments, arguments);
-		finalitza_allibera_memoria ();
+		out = inicialitzador_lectura_objecte_1 (nom, nombre_arguments, arguments, verbos_lexic);
+		//finalitza_allibera_memoria ();
 		if (arguments)
 			free (arguments);
 		return out;

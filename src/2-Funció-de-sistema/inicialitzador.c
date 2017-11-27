@@ -17,8 +17,8 @@ definir_funcio_sistema (int lloc, char *nom,
 	f->funcio = funcio;
 	f->descriptor = descriptor;
 
-	f->arguments = arguments;
-	f->arguments.punter = reservar_memoria_i_copiarla ( arguments.punter, arguments.mida * sizeof (struct variable) );
+	//f->arguments = arguments; TODO
+	//f->arguments.punter = reservar_memoria_i_copiarla ( arguments.punter, arguments.mida * sizeof (struct variable) );
 }
 
 void
@@ -39,12 +39,26 @@ inicialitza_funcions_sistema (void)
 
 	descriptor.vegades_punter = 1;
 	definir_funcio_sistema (Extreure_punter, "&", extreu_punter, vs, descriptor);
+
+	free (vs.punter);
+}
+
+void
+finalitza_funcio_sistema ( struct llista_sistema *f )
+{
+	int i;
+
+	for (i = 0; i < f->mida; i++)
+		;
+		//free (f->punter[i].arguments.punter); TODO
+
+	funcions_sistema.mida = 0;
+	free (funcions_sistema.punter);
+	funcions_sistema.punter = NULL;
 }
 
 void
 finalitza_funcions_sistema (void)
 {
-	funcions_sistema.mida = 0;
-	free (funcions_sistema.punter);
-	funcions_sistema.punter = NULL;
+	finalitza_funcio_sistema ( &funcions_sistema );
 }

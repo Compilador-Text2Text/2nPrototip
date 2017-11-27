@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "../1-Executor/descriptor.h"
 
 void
@@ -13,10 +14,12 @@ alliberar_variables (struct variables *vs)
 }
 
 void
-alliberar_paraules ( struct frase *pf )
+alliberar_frases ( struct frase *f )
 {
-	free (pf->punter);
-	pf->mida = 0;
+printf ("\nA\n");
+	free (f->punter);
+printf ("B\n");
+	f->mida = 0;
 }
 
 void
@@ -25,7 +28,7 @@ alliberar_codi ( struct codi *codi )
 	int i;
 
 	for (i = 0; i < codi->mida; i++)
-		alliberar_paraules ( &codi->punter[i] );
+		alliberar_frases ( codi->punter +i );
 
 	free ( codi->punter );
 	codi->mida = 0;
