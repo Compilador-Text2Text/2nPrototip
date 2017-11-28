@@ -2,6 +2,7 @@ include 0-Inicialitzador/GNU.mk
 include 1-Executor/GNU.mk
 include 2-Funció-de-sistema/GNU.mk
 include 3-Lèxic/GNU.mk
+include 4-Sintàctic/GNU.mk
 include 6-Depurador/GNU.mk
 include 9-Util/GNU.mk
 
@@ -28,6 +29,7 @@ OBJECT =			\
 	$(EXECUTOR_O_)		\
 	$(SISTEM_O_)		\
 	$(LEXIC_O_)		\
+	$(SINTACTIC_O_)		\
 	$(DEPURADOR_O_)		\
 	$(UTILS_O_)		\
 
@@ -117,6 +119,10 @@ $(LEXIC_ESTATS_O_): $(LEXIC_ESTATS_C_) $(UTILS_PILA_H_)
 
 $(LEXIC_ESTATS_v1_O_): $(LEXIC_ESTATS_v1_C_)
 	gcc $(LEXIC_ESTATS_v1_C_) $(GLIBS) -o $(LEXIC_ESTATS_v1_O_)
+
+####################     Sintàctic     ####################
+$(SINTACTIC_SHUNTING_YARD_ALGORITM_O_): $(SINTACTIC_SHUNTING_YARD_ALGORITM_C_)
+	gcc $(SINTACTIC_SHUNTING_YARD_ALGORITM_C_) $(GLIBS) -o $(SINTACTIC_SHUNTING_YARD_ALGORITM_O_)
 
 ####################     Interpret     ####################
 $(OBJDIR)/main.o: main.c # $(MK_INTERPRET)
