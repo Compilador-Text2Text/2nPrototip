@@ -10,7 +10,7 @@
  * 0.1		Localitzacions	{Codi, Variables, Funció}
  * 0.2		Tipus		{Char, Int, Void}
  * 0.3		Sistema		Noms de funcions del sistema.
- * 0.4		enumerador SYA	{Valor, Funció, Operador, …}
+ * 0.4		numerador SYA	{Valor, Funció, Operador, …}
  * 0.5		Cert fals	Per saber si és verdader.
  *
  * 1	Amb dependències amb *0*.

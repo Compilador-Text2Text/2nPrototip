@@ -6,6 +6,7 @@
 #include "../3-Lèxic/LecturaObjecte/v01-lèxic.h"
 #include "../6-Depurador/depurador.h"
 #include "../9-Util/pila.h"
+#include "../4-Sintàctic/shunting-yard_algorithm.h"
 
 FILE *g_pf;		// punter de fitxer, variable global.
 int g_f;		// global fila.
@@ -93,5 +94,8 @@ inicialitzador_lectura_objecte_1 (char *nom, int argc, char**argv, int verbos)
 	fclose (g_pf);
 
 	pila_alliberar (&g_e_s);
+
+	shunting_yard_algorithm ();
+
 	return 0;
 }

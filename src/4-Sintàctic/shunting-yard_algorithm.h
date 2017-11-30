@@ -3,6 +3,10 @@
 
 #include "../1-Executor/descriptor.h"
 
-void shunting_yard_algorithm (struct codi *);
+// General.
+void shunting_yard_algorithm (void);
+
+// Funció concreta.
+void shunting_yard_algorithm_codi (struct codi *);
 
 #endif // SINTACTIC_SHUTING_YARD_ALGORITHM_H_
