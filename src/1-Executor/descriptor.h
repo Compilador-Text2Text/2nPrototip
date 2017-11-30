@@ -67,6 +67,8 @@ localitzacions
 
 	NoRetorn,	// Error, no queden frases.
 
+	Preexecucio,
+
 	EndLocalitzacions
 };
 
@@ -95,20 +97,33 @@ sistema
 	End_sistema
 };
 
-/*0.4* Serveix per a poder definir els estats del SYA.		*/
 enum
-estats_sya
+funcions_sya
 {
-// Informació obtinguda de la lectura d'objecte.
-	Valor,				// 3, variables, '2', "cadena"
 	Funcio,
+	Asociativa_dreta,
+	Asociativa_esquerra
+};
+
+enum
+pre_execucio
+{
 	Obert,				// (, {
 	Tancat,				// ), }
 
-// Informació als descriptors de funcions.
-	Operador_associacio_esquerra,	// +, -, *, /
-	Operador_associacio_dreta,	// ^, =
+	Coma,				// ,
 
+// Funcions especials.
+	While,
+	End_While,
+	For,
+	End_For,
+	If,
+	Else_if,
+	Else,
+	End_if,
+
+	End_preexecucio,
 };
 
 /*0.5* Serveix per a saber si ha passat o no.			*/
@@ -126,6 +141,13 @@ localitzat
 {
 	enum localitzacions on;
 	size_t relatiu;
+};
+
+struct
+estats_sya
+{
+	enum funcions_sya tipus_funcio;
+	size_t precedencia; // Com més gran abans ho farà.
 };
 
 struct
