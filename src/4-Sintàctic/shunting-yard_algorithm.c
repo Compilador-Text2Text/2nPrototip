@@ -62,9 +62,23 @@ funcio_o_operant (struct paraula *p)
 }
 
 void
+pre_execucio (struct paraula *p)
+{
+	switch ((enum pre_execucio)p->lloc.relatiu)
+	{
+		case Obert:
+			pila_afegir (&pfa, p);
+			break;
+
+		case Coma:
+			break;
+	}
+}
+
+void
 shunting_yard_algorithm_paraula (struct paraula *p)
 {
-//printf ("hola món\n"); Peta per problemes de reservar memòria.
+//printf ("hola món\n"); // Peta per problemes de reservar memòria.
 // TODO Vigilar a fer-ho prou lent per evitar aquests problemes!
 	switch (p->lloc.on)
 	{
@@ -77,6 +91,7 @@ shunting_yard_algorithm_paraula (struct paraula *p)
 
 	case Funcions:
 	case Sistema:
+		funcio_o_operant (p);
 		// Amb el relatiu, recuperar la informació pel sya
 		// enviar la informació amb la paraula (així per Sistema també funcionarà!
 		break;
@@ -85,7 +100,10 @@ shunting_yard_algorithm_paraula (struct paraula *p)
 		break;
 
 	case Preexecucio:
+		pre_execucio (p);
+		break;
 
+	default:
 		printf ("Error, entrat un valor inesperat\n");
 		exit (1);
 	}
