@@ -50,6 +50,7 @@ valor
 
 /*0.1* Serveix per poder executar correctament la (2.0)paraula.	*/
 // Usat: (1.0)localitzat.
+// Localització_on_*
 enum
 localitzacions
 {
@@ -73,6 +74,7 @@ localitzacions
 };
 
 /*0.2* Serveix per a poder saber amb que estem treballant.	*/
+// Descriptor_tipus_*
 enum
 tipus
 {
@@ -88,15 +90,21 @@ tipus
 };
 
 /*0.3* Serveix per a poder definir les funcions amb dígits.	*/
+// Sistema_relatiu_*
 enum
 sistema
 {
 	Igual_general,
 	Extreure_punter,
 
+	Goto,	// Salt.
+	GotoZ,	// Salt si és zero.
+	GotoNZ,	// Salt si no és zero.
+
 	End_sistema
 };
 
+// SYA_tipus_*
 enum
 funcions_sya
 {
@@ -105,6 +113,8 @@ funcions_sya
 	Asociativa_esquerra
 };
 
+// Pensat fer Preexecució_relatiu_*
+// Perquè és de la preexecució, però és el apartat relatiu.
 enum
 pre_execucio
 {

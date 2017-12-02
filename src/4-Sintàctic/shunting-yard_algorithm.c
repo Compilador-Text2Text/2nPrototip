@@ -4,10 +4,26 @@
 
 #include "../9-Util/pila.h"
 
+struct
+sya_salts
+{
+	enum pre_execucio tipus;
+	size_t on;
+	struct frase condicio;
+	struct frase inici;
+	struct frase increment;
+	size_t primera_paraula_relativa;
+};
+
 struct pila pco;	// Pila del codi, sortida.
 struct pila pfo;	// Pila de frase, sortida.
 struct pila pfa;	// Pila de frase, auxiliar.
 struct pila pj;		// Pila dels salts (jumps).
+
+enum cert_fals bolea_obert_arguments	= Fals; // Nombre arguments 0 o major.
+enum cert_fals bolea_condicio		= Fals; // while (cond), for (,condi,), if (cond)
+enum cert_fals bolea_inici		= Fals; // for (inici,
+enum cert_fals bolea_increment		= Fals; // for (,,increment)
 
 int
 si_operant_retorna_estat_sya (struct paraula *p, struct estats_sya *s)
@@ -62,17 +78,163 @@ funcio_o_operant (struct paraula *p)
 }
 
 void
+preparacio_salt_logic (struct sya_salts *s, struct paraula *p)
+{
+	struct paraula n;
+
+	n.lloc.on = Sistema;
+	n.lloc.relatiu = GotoZ;
+	n.descriptor.tipus = CapTipus;
+	n.descriptor.vegades_punter = 0;
+	n.auxiliar.enter = 0;
+	shunting_yard_algorithm_paraula (&n);
+
+	n.lloc.on = Preexecucio;
+	n.lloc.relatiu = Obert;
+	shunting_yard_algorithm_paraula (&n);
+
+	n.lloc.on = Codi;
+	n.lloc.relatiu = 0;
+	shunting_yard_algorithm_paraula (&n);
+
+	n.lloc.on = Preexecucio;
+	n.lloc.relatiu = Coma;
+	shunting_yard_algorithm_paraula (&n);
+
+	s->tipus			= p->lloc.relatiu;
+	s->on				= pco.us;
+	s->condicio.punter		= NULL;
+	s->condicio.mida		= 0;
+	s->inici.punter			= NULL;
+	s->inici.mida			= 0;
+	s->increment.punter		= NULL;
+	s->increment.mida		= 0;
+	s->primera_paraula_relativa	= pfo.us;
+	pila_afegir (&pj, s);
+}
+
+void
 pre_execucio (struct paraula *p)
 {
+	struct paraula *a, n;
+	int i;
+	struct estats_sya o;
+	struct sya_salts s;
+
+
 	switch ((enum pre_execucio)p->lloc.relatiu)
 	{
-		case Obert:
-			pila_afegir (&pfa, p);
-			break;
+	case Obert:
+		bolea_obert_arguments = Cert;
+		pila_afegir (&pfa, p);
+		break;
 
-		case Coma:
-			break;
+	case Coma:
+		while (pfa.us)
+		{
+			a = pila_mostra (&pfa);
+			if ((a->lloc.on == Preexecucio) && (a->lloc.relatiu == Obert))
+			{
+				a->auxiliar.enter++;
+				return;
+			}
+
+			pila_afegir (&pfo, a);
+			pila_treure (&pfa);
+		}
+		printf ("Error, Coma sense parèntesis obert\n");
+		exit (EXIT_FAILURE);
+
+	case Tancat:
+		while (pfa.us)
+		{
+			a = pila_treure (&pfa);
+			if ((a->lloc.on == Preexecucio) && (a->lloc.relatiu == Obert))
+			{
+				i = a->auxiliar.enter;
+				a = pila_mostra (&pfa);
+
+				si_operant_retorna_estat_sya (a, &o);
+
+				if (o.tipus_funcio == Funcio)
+				{
+					a->auxiliar.enter = i;
+					pila_afegir (&pfo, pila_treure (&pfa));
+				} else if (i)
+				{
+					printf ("Arguments per una no funció!\n");
+					exit (EXIT_FAILURE);
+				}
+				return;
+			}
+
+			pila_afegir (&pfo, a);
+
+			if (bolea_condicio)
+			{// Només pel while.
+				printf ("TODO, pendent a fer!\n");
+				bolea_condicio = Fals;
+				exit (EXIT_FAILURE);
+			}
+			if (bolea_increment)
+			{// Només el final del for.
+				printf ("TODO, pendent a fer!\n");
+				bolea_increment = Fals;
+				exit (EXIT_FAILURE);
+			}
+		}
+		printf ("Error, Coma sense parèntesis obert\n");
+		exit (EXIT_FAILURE);
+
+	case While:
+		bolea_condicio = Cert;
+		preparacio_salt_logic (&s, p);
+		break;
+
+	case End_While:
+		s = *(struct sya_salts*) pila_treure (&pj);
+		if (s.tipus != While)
+		{
+			printf ("ERROR, no és un while!\n");
+			exit (EXIT_FAILURE);
+		}
+
+		n.lloc.on = Sistema;
+		n.lloc.relatiu = GotoNZ;
+		n.descriptor.tipus = CapTipus;
+		n.descriptor.vegades_punter = 0;
+		n.auxiliar.enter = 0;
+
+		n.lloc.on = Preexecucio;
+		n.lloc.relatiu = Obert;
+		shunting_yard_algorithm_paraula (&n);
+
+		n.lloc.on = Codi;
+		n.lloc.relatiu = s.on +1; // TODO, comprovar el resultat!
+		shunting_yard_algorithm_paraula (&n);
+
+		n.lloc.on = Preexecucio;
+		n.lloc.relatiu = Coma;
+		shunting_yard_algorithm_paraula (&n);
+
+		for (i = 0; i < s.condicio.mida; i++)
+			pila_afegir (&pfo, s.condicio.punter +i);
+
+		n.lloc.on = Preexecucio;
+		n.lloc.relatiu = Tancat;
+		shunting_yard_algorithm_paraula (&n);
 	}
+	/*
+struct
+sya_salts
+{
+	enum pre_execucio tipus;
+	size_t on;
+	struct frase *condicio;
+	struct frase *inici;
+	struct frase *increment;
+	size_t primera_paraula_relativa;
+};*/
 }
 
 void
@@ -80,6 +242,17 @@ shunting_yard_algorithm_paraula (struct paraula *p)
 {
 //printf ("hola món\n"); // Peta per problemes de reservar memòria.
 // TODO Vigilar a fer-ho prou lent per evitar aquests problemes!
+
+	// Cas de tenir arguments la funció.
+	if (bolea_obert_arguments)
+	{
+		bolea_obert_arguments = Fals;
+
+		if (p->lloc.on == Preexecucio)
+			if (p->lloc.relatiu != Tancat)
+				((struct paraula *)pila_mostra (&pfa))->auxiliar.enter = 1;
+	}
+
 	switch (p->lloc.on)
 	{
 	case Codi:
@@ -105,7 +278,7 @@ shunting_yard_algorithm_paraula (struct paraula *p)
 
 	default:
 		printf ("Error, entrat un valor inesperat\n");
-		exit (1);
+		exit (EXIT_FAILURE);
 	}
 }
 
@@ -130,10 +303,10 @@ shunting_yard_algorithm_codi (struct codi *c)
 void
 shunting_yard_algorithm_inicialitzar (size_t codi, size_t frase, size_t jumps)
 {
-	pco = pila_inicialitzar (codi, sizeof (struct codi *));
-	pfo = pila_inicialitzar (frase, sizeof (struct frase *));
-	pfa = pila_inicialitzar (frase, sizeof (struct frase *));
-	pj  = pila_inicialitzar (jumps, sizeof (struct frase *));
+	pco = pila_inicialitzar (codi, sizeof (struct codi));
+	pfo = pila_inicialitzar (frase, sizeof (struct frase));
+	pfa = pila_inicialitzar (frase, sizeof (struct frase));
+	pj  = pila_inicialitzar (jumps, sizeof (struct sya_salts));
 }
 
 void
